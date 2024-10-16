@@ -153,7 +153,7 @@ public class NodeHandler : MonoBehaviour
                 {
                     if (n.transform.position == no.transform.position)
                     {
-                        no.transform.position = new Vector3(no.transform.position.x + 0.05f, no.transform.position.y - 0.05f, no.transform.position.z * 1.1f);
+                        no.transform.position = new Vector3(no.transform.position.x + 0.1f, no.transform.position.y - 0.15f, no.transform.position.z * 1.1f);
                     }
                 }
             }
