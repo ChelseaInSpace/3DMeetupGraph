@@ -21,6 +21,7 @@ public class CameraControl : MonoBehaviour
 
     void Awake()
     {
+        //COMMENT FOR GIT STUFF
 		me = gameObject.transform;
 	}
 
