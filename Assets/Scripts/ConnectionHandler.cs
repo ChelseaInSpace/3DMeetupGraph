@@ -52,9 +52,12 @@ public class ConnectionHandler : MonoBehaviour
     public static Transform me;
     public UICurrentNode NodeDisplayReference;
     static UICurrentNode CurrentNodeDisplay;
+    public UIAddDragConnection DragConnectionMenuReference;
+    static UIAddDragConnection ConfirmDragConnectionMenu;
 
     void Awake()
     {
+        ConfirmDragConnectionMenu = DragConnectionMenuReference;
         CurrentNodeDisplay = NodeDisplayReference;
         me = gameObject.transform;
         CD = Prefab;
@@ -87,7 +90,12 @@ public class ConnectionHandler : MonoBehaviour
 
     public static void CreateConnectionFromDrag(Node a, Node b)
     {
-        AddConnection(a, b);
+        Connection c = new Connection(a, b);
+        if (!DoesConnectionExist(c))
+        {
+            ConfirmDragConnectionMenu.gameObject.SetActive(true);
+            ConfirmDragConnectionMenu.Initialise(a, b);
+        }
     }
 
     public static bool DoesConnectionExist(Connection c)

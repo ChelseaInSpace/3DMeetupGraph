@@ -57,7 +57,6 @@ public class Node : MonoBehaviour
                 {
                     worldPosition = ray.GetPoint(distance);
                 }
-                Debug.Log(worldPosition.ToString());
                 MyLine.SetPosition(1, worldPosition);
             }
         }
@@ -74,7 +73,6 @@ public class Node : MonoBehaviour
                 Node otherNode = hit.transform.GetComponent<Node>();
                 if (otherNode != null && otherNode != this)
                 {
-                    Debug.Log("has found other node " + otherNode.GetNodeName());
                     ConnectionHandler.CreateConnectionFromDrag(otherNode, this);
                 }
             }

@@ -179,6 +179,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Prefab: {fileID: 4377464848720793153, guid: 03ea761cea9ed1b40bea2cfb6be2e978, type: 3}
   NodeDisplayReference: {fileID: 831238279}
+  DragConnectionMenuReference: {fileID: 1853400295}
 --- !u!1 &888277879
 GameObject:
   m_ObjectHideFlags: 0
@@ -4958,6 +4959,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da330424df507d846bd1a5cde8adf60e, type: 3}
+--- !u!114 &1853400295 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6756169886246415540, guid: da330424df507d846bd1a5cde8adf60e, type: 3}
+  m_PrefabInstance: {fileID: 1853400294}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39a23fac7ac6f159eaa4cf1fb012e9ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
