@@ -8,8 +8,12 @@ public class Node : MonoBehaviour
 {
     public TextMeshPro MyText;
     public MeshRenderer MyRenderer;
+    public LineRenderer MyLine;
     Color myColour;
     string myName = "Empty";
+    int dragCounter = 0;
+    Vector3 worldPosition;
+    Plane plane = new(Vector3.forward, 0);
 
     void Update()
     {
@@ -36,6 +40,47 @@ public class Node : MonoBehaviour
         {
             NodeHandler.UpdateCurrentNode(this);
         }
+    }
+
+    private void OnMouseDrag()
+    {
+        if (NodeHandler.GetCurrentNode() == this)
+        {
+            dragCounter++;
+            if (dragCounter > 7)
+            {
+                MyLine.enabled = true;
+                MyLine.SetPosition(0, this.transform.position);
+                float distance;
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if (plane.Raycast(ray, out distance))
+                {
+                    worldPosition = ray.GetPoint(distance);
+                }
+                Debug.Log(worldPosition.ToString());
+                MyLine.SetPosition(1, worldPosition);
+            }
+        }
+    }
+
+    private void OnMouseUp()
+    {
+        if (NodeHandler.GetCurrentNode() == this)
+        {
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out hit))
+            {
+                Node otherNode = hit.transform.GetComponent<Node>();
+                if (otherNode != null && otherNode != this)
+                {
+                    Debug.Log("has found other node " + otherNode.GetNodeName());
+                    ConnectionHandler.CreateConnectionFromDrag(otherNode, this);
+                }
+            }
+        }
+        MyLine.enabled = false;
+        dragCounter = 0;
     }
 
     public void SetActiveColour(Color colour)

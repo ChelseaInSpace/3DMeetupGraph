@@ -62,17 +62,8 @@ public class ConnectionHandler : MonoBehaviour
 
     public static void AddConnection(Node a, Node b)
     {
-        bool exists = false;
         Connection c = new Connection(a, b);
-        foreach(Connection co in ConnectionList)
-        {
-            if (co.Equals(c))
-            {
-                exists = true;
-                Debug.Log("Connection already exists: " + a.GetNodeName() + ", " + b.GetNodeName() + ".");
-            }
-        }
-        if(!exists)
+        if(!DoesConnectionExist(c))
         {
             ConnectionList.Add(c);
             RenderConnections();
@@ -92,6 +83,25 @@ public class ConnectionHandler : MonoBehaviour
         {
             Debug.Log("couldn't parse string connection input for: " + a + ", " + b + ".");
         }
+    }
+
+    public static void CreateConnectionFromDrag(Node a, Node b)
+    {
+        AddConnection(a, b);
+    }
+
+    public static bool DoesConnectionExist(Connection c)
+    {
+        bool exists = false;
+        foreach(Connection co in ConnectionList)
+        {
+            if (co.Equals(c))
+            {
+                exists = true;
+                Debug.Log("Connection already exists: " + c.A.GetNodeName() + ", " + c.B.GetNodeName() + ".");
+            }
+        }
+        return exists;
     }
 
     public static void RenderConnections()
@@ -150,12 +160,9 @@ public class ConnectionHandler : MonoBehaviour
     public static List<Connection> ListAllConnectionsForNode(Node n)
     {
         List<Connection> temp = new List<Connection>();
-
         temp = ConnectionList.FindAll(c => c.A == n || c.B == n);
-
         return temp;
     }
-
 
     public static int GetAmountOfTotalConnectionsForPartnersOfConnection(Connection c)
     {
@@ -166,19 +173,6 @@ public class ConnectionHandler : MonoBehaviour
                 i += 1;
             if(c.B == co.A || c.B == co.B)
                 i += 1;
-        }
-        return i;
-    }
-
-    public static int GetAmountOfConnectionsForNode(Node n)
-    {
-        int i = 0;
-        foreach(Connection c in ConnectionList)
-        {
-            if(c.A == n || c.B == n)
-            {
-                i++;
-            }
         }
         return i;
     }
