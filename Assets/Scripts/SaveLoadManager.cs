@@ -70,7 +70,12 @@ public class SaveLoadManager : MonoBehaviour
         {
             Directory.CreateDirectory(path);
         }
+        File.WriteAllText(path + "/Nodes.json", JsonUtility.ToJson(NodesToFile()));
+        File.WriteAllText(path + "/Connections.json", JsonUtility.ToJson(ConnectionsToFile()));
+    }
 
+    public static NDList NodesToFile()
+    {
         NDList ndlist = new NDList(new List<NodeData>());
         foreach (Node n in NodeHandler.NodeList)
         {
@@ -81,8 +86,11 @@ public class SaveLoadManager : MonoBehaviour
             };
             ndlist.Add(nd);
         }
-        File.WriteAllText(path + "/Nodes.json", JsonUtility.ToJson(ndlist));
+        return ndlist;
+    }
 
+    public static CDList ConnectionsToFile()
+    {
         CDList cdlist = new CDList(new List<ConnectionsData>());
         foreach (ConnectionHandler.Connection c in ConnectionHandler.ConnectionList)
         {
@@ -93,7 +101,22 @@ public class SaveLoadManager : MonoBehaviour
             };
             cdlist.Add(cd);
         }
-        File.WriteAllText(path + "/Connections.json", JsonUtility.ToJson(cdlist));
+        return cdlist;
+    }
+
+    public static bool DataExists()
+    {
+        string pathNodes = Application.persistentDataPath + "/" + ID + "/Nodes.json";
+        string pathConnections = Application.persistentDataPath + "/" + ID + "/Connections.json";
+        if (!File.Exists(pathNodes))
+        {
+            return false;
+        }
+        if (!File.Exists(pathConnections))
+        {
+            return false;
+        }
+        return JsonUtility.ToJson(NodesToFile()) == File.ReadAllText(pathNodes) && JsonUtility.ToJson(ConnectionsToFile()) == File.ReadAllText(pathConnections);
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -111,7 +134,7 @@ public class SaveLoadManager : MonoBehaviour
         CDList LoadedCD = new CDList(new List<ConnectionsData>());
 
         string path = Application.persistentDataPath + "/" + id;
-        if (System.IO.File.Exists(path + "/Nodes.json"))
+        if (File.Exists(path + "/Nodes.json"))
         {     
             string nodes = File.ReadAllText(path + "/Nodes.json");
             LoadedND = JsonUtility.FromJson<NDList>(nodes);
@@ -124,7 +147,7 @@ public class SaveLoadManager : MonoBehaviour
             }
         }
         
-        if (System.IO.File.Exists(path + "/Connections.json"))
+        if (File.Exists(path + "/Connections.json"))
         {
             string connections = File.ReadAllText(path + "/Connections.json");
             LoadedCD = JsonUtility.FromJson<CDList>(connections);

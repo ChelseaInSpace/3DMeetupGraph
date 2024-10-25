@@ -2090,26 +2090,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2994819662047814793, guid: da330424df507d846bd1a5cde8adf60e, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2994819662047814793, guid: da330424df507d846bd1a5cde8adf60e, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 2994819662047814793, guid: da330424df507d846bd1a5cde8adf60e, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnSaveClick
-      objectReference: {fileID: 0}
-    - target: {fileID: 2994819662047814793, guid: da330424df507d846bd1a5cde8adf60e, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: SaveLoadObject, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 2994819662047814793, guid: da330424df507d846bd1a5cde8adf60e, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     - target: {fileID: 3004749112861141373, guid: da330424df507d846bd1a5cde8adf60e, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -3660,7 +3640,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6315468800712369276, guid: da330424df507d846bd1a5cde8adf60e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.000063973675
+      value: 0.00001704608
       objectReference: {fileID: 0}
     - target: {fileID: 6357383173806349181, guid: da330424df507d846bd1a5cde8adf60e, type: 3}
       propertyPath: m_AnchorMax.y

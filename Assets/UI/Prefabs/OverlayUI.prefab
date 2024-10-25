@@ -2944,7 +2944,7 @@ GameObject:
   - component: {fileID: 5348688706902368738}
   - component: {fileID: 5842514520598270522}
   m_Layer: 5
-  m_Name: ButtonConfirm
+  m_Name: ButtonDiscard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2967,7 +2967,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 68.333336, y: -50}
+  m_AnchoredPosition: {x: 205, y: -50}
   m_SizeDelta: {x: 120, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8124076184114238572
@@ -3229,8 +3229,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2128976429132138081}
   - {fileID: 3947782988624518661}
+  - {fileID: 2128976429132138081}
   - {fileID: 831464141411090322}
   m_Father: {fileID: 1683209001421648149}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4876,7 +4876,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 205, y: -50}
+  m_AnchoredPosition: {x: 68.333336, y: -50}
   m_SizeDelta: {x: 120, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6197725309285572131
@@ -12572,7 +12572,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -30}
-  m_SizeDelta: {x: 0, y: 50}
+  m_SizeDelta: {x: -200, y: 50}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &3125724254736931552
 CanvasRenderer:
@@ -12602,9 +12602,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Unsaved changes
-
-    will be lost'
+  m_text: Save changes before quitting?
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: af3f0a2f7486b2642a088ffaf694cb1e, type: 2}
   m_sharedMaterial: {fileID: 6052077470346107107, guid: af3f0a2f7486b2642a088ffaf694cb1e, type: 2}
@@ -13094,7 +13092,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Confirm
+  m_text: Discard
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7652cbd9878baad478a2f0dc221d4518, type: 2}
   m_sharedMaterial: {fileID: -3559525847219054987, guid: 7652cbd9878baad478a2f0dc221d4518, type: 2}

@@ -9,7 +9,10 @@ public class UIQuitButton : MonoBehaviour
 
     public void OnClick()
     {
-        QuitDialogue.SetActive(!QuitDialogue.activeSelf);
+        if(SaveLoadManager.DataExists())
+            ConfirmQuit();
+        else
+            QuitDialogue.SetActive(!QuitDialogue.activeSelf);
     }
 
     public void ConfirmQuit()
@@ -22,5 +25,6 @@ public class UIQuitButton : MonoBehaviour
     public void Save()
     {
         SaveLoadManager.SaveData();
+        ConfirmQuit();
     }
 }

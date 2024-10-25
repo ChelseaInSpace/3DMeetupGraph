@@ -64,6 +64,7 @@ public class Node : MonoBehaviour
 
     private void OnMouseUp()
     {
+        MyLine.enabled = false;
         if (NodeHandler.GetCurrentNode() == this)
         {
             RaycastHit hit;
@@ -73,11 +74,11 @@ public class Node : MonoBehaviour
                 Node otherNode = hit.transform.GetComponent<Node>();
                 if (otherNode != null && otherNode != this)
                 {
+                    MyLine.enabled = true;
                     ConnectionHandler.CreateConnectionFromDrag(otherNode, this);
                 }
             }
         }
-        MyLine.enabled = false;
         dragCounter = 0;
     }
 
