@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,8 +15,9 @@ public class CameraControl : MonoBehaviour
 	float slowDownRatio = 0.2f;
 
 	//Mouse lookaround controls
-	private float rotateSpeed = 90f;
-
+	float rotateSpeed = 90f;
+	float mouseX;
+	float mouseY;
     void Awake()
     {
 		me = gameObject.transform;
@@ -26,17 +28,30 @@ public class CameraControl : MonoBehaviour
 		if (!EventSystem.current.IsPointerOverGameObject() && MovementEnabled)
 		{
 			//Mouse lookaround
-            if(Input.GetKey(KeyCode.Mouse1))
+            if(Input.GetMouseButton(1))
             {
             	Cursor.lockState = CursorLockMode.Locked;
-            	float mouseX = SettingsData.InvertCamRotX ? -Input.GetAxis("Mouse X") : Input.GetAxis("Mouse X");
-            	float mouseY = SettingsData.InvertCamRotY ? -Input.GetAxis("Mouse Y") : Input.GetAxis("Mouse Y");
-	            transform.RotateAround (Vector3.zero,new Vector3(mouseY, mouseX, 0.0f),rotateSpeed * Time.deltaTime);
+            	mouseX = SettingsData.InvertCamRotX ? -Input.GetAxis("Mouse X") : Input.GetAxis("Mouse X");
+            	mouseY = SettingsData.InvertCamRotY ? -Input.GetAxis("Mouse Y") : Input.GetAxis("Mouse Y");
+	            if (Mathf.Abs(mouseX) > Mathf.Abs(mouseY))
+		            transform.RotateAround (Vector3.zero,new Vector3(0.0f, mouseX, 0.0f),rotateSpeed * Time.deltaTime);
+	            //TODO: figure out rotation stuff
             }
-    
-            if(Input.GetKeyUp(KeyCode.Mouse1))
+            if(Input.GetMouseButtonUp(1))
             {
             	Cursor.lockState = CursorLockMode.None;
+            }
+
+            if (Input.GetMouseButton(2))
+            { Debug.Log(Cursor.lockState.ToString());
+	            Cursor.lockState = CursorLockMode.Locked;
+	            Debug.Log(Cursor.lockState.ToString());
+	            transform.Translate(Vector3.forward * flySpeed * Input.GetAxis("Mouse X"));
+	            transform.Translate(Vector3.right * flySpeed * Input.GetAxis("Mouse Y"));
+            }
+            if (Input.GetMouseButtonUp(2))
+            {
+	            Cursor.lockState = CursorLockMode.None;
             }
     
             if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
@@ -63,7 +78,6 @@ public class CameraControl : MonoBehaviour
             {
             	transform.Translate(Vector3.forward * flySpeed * Input.GetAxis("Vertical"));
             }
-    
     
             if (Input.GetAxis("Horizontal") != 0)
             {
