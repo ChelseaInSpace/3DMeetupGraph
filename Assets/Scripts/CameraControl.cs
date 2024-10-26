@@ -14,23 +14,13 @@ public class CameraControl : MonoBehaviour
 	float slowDownRatio = 0.2f;
 
 	//Mouse lookaround controls
-	public float mouseSensitivity = 200;
-	public float clampAngle = 60.0f;
-	private float rotY = 0.0f; //rotation around the up/y axis
-	private float rotX = 0.0f; //rotation around the right/x axis
+	private float rotateSpeed = 90f;
 
     void Awake()
     {
 		me = gameObject.transform;
 	}
-
-    void Start()
-	{
-		Vector3 rot = transform.localRotation.eulerAngles;
-		rotY = rot.y;
-		rotX = rot.x;
-	}
-
+    
 	void Update()
 	{
 		if (!EventSystem.current.IsPointerOverGameObject() && MovementEnabled)
@@ -39,13 +29,9 @@ public class CameraControl : MonoBehaviour
             if(Input.GetKey(KeyCode.Mouse1))
             {
             	Cursor.lockState = CursorLockMode.Locked;
-            	float mouseX = Input.GetAxis("Mouse X");
-            	float mouseY = -Input.GetAxis("Mouse Y");
-            	rotY += mouseX * mouseSensitivity * Time.deltaTime;
-            	rotX += mouseY * mouseSensitivity * Time.deltaTime;
-            	rotX = Mathf.Clamp(rotX, -clampAngle, clampAngle);
-            	Quaternion localRotation = Quaternion.Euler(rotX, rotY, 0.0f);
-            	transform.rotation = localRotation;
+            	float mouseX = SettingsData.InvertCamRotX ? -Input.GetAxis("Mouse X") : Input.GetAxis("Mouse X");
+            	float mouseY = SettingsData.InvertCamRotY ? -Input.GetAxis("Mouse Y") : Input.GetAxis("Mouse Y");
+	            transform.RotateAround (Vector3.zero,new Vector3(mouseY, mouseX, 0.0f),rotateSpeed * Time.deltaTime);
             }
     
             if(Input.GetKeyUp(KeyCode.Mouse1))
