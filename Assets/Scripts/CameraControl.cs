@@ -7,7 +7,9 @@ using UnityEngine.EventSystems;
 public class CameraControl : MonoBehaviour
 {
     public static bool MovementEnabled = true;
-	private static Transform me;
+	static Transform me;
+	Plane plane = new(Vector3.forward, 0);
+
 
 	//Movement controls
 	float flySpeed = 0.05f;
@@ -83,8 +85,36 @@ public class CameraControl : MonoBehaviour
             {
             	transform.Translate(Vector3.right * flySpeed * Input.GetAxis("Horizontal"));
             }
-    
-            transform.Translate(Input.mouseScrollDelta.y * 0.2f * Vector3.forward);
+
+            if (Input.mouseScrollDelta.y != 0)
+            {
+	            if (Input.mouseScrollDelta.y > 0)
+	            {
+		            Debug.Log("scrolling");
+		            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+		            float distance1;
+		            Vector3 point1 = new Vector3();
+		            Vector3 point2 = new Vector3();
+		            if (plane.Raycast(ray, out distance1))
+		            {
+			            point1 = ray.GetPoint(distance1);
+		            }
+		            transform.Translate(Input.mouseScrollDelta.y * 0.2f * Vector3.forward);
+		            Ray ray2 = Camera.main.ScreenPointToRay(Input.mousePosition);
+		            float distance2;
+		            if (plane.Raycast(ray2, out distance2))
+		            {
+			            point2 = ray.GetPoint(distance2);
+		            }
+		            Vector3 difference = point1 - point2;
+		            transform.position += difference;
+		            //transform.Translate(difference);
+	            }
+	            else
+	            {
+		            transform.Translate(Input.mouseScrollDelta.y * 0.2f * Vector3.forward);
+	            }
+            }
     
             if (Input.GetKey(KeyCode.E))
             {
