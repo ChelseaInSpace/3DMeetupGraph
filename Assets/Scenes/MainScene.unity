@@ -531,8 +531,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd3d1e4835ada614886657a6c3fe461d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseSensitivity: 200
-  clampAngle: 60
 --- !u!45 &1790968131
 Skybox:
   m_ObjectHideFlags: 0
@@ -2688,6 +2686,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3948966830652748476, guid: da330424df507d846bd1a5cde8adf60e, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3948966830652748476, guid: da330424df507d846bd1a5cde8adf60e, type: 3}
+      propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3949399671781380977, guid: da330424df507d846bd1a5cde8adf60e, type: 3}
