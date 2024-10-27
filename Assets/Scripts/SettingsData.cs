@@ -11,4 +11,5 @@ public static class SettingsData
     public static bool VSync = false;
     public static int ResolutionWidth = 1920;
     public static int ResolutionHeight = 1080;
+    public static bool RecolourNodesOnPositioning = true;
 }

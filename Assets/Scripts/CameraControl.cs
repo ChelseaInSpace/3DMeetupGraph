@@ -35,9 +35,9 @@ public class CameraControl : MonoBehaviour
             	Cursor.lockState = CursorLockMode.Locked;
             	mouseX = SettingsData.InvertCamRotX ? -Input.GetAxis("Mouse X") : Input.GetAxis("Mouse X");
             	mouseY = SettingsData.InvertCamRotY ? -Input.GetAxis("Mouse Y") : Input.GetAxis("Mouse Y");
-	            if (Mathf.Abs(mouseX) > Mathf.Abs(mouseY))
-		            transform.RotateAround (Vector3.zero,new Vector3(0.0f, mouseX, 0.0f),rotateSpeed * Time.deltaTime);
-	            //TODO: figure out rotation stuff
+	            transform.RotateAround (Vector3.zero,Vector3.up,mouseX * rotateSpeed * Time.deltaTime);
+	            //TODO: figure out jittering
+	            transform.RotateAround(Vector3.zero, transform.right, mouseY * rotateSpeed * Time.deltaTime);
             }
             if(Input.GetMouseButtonUp(1))
             {
@@ -90,7 +90,6 @@ public class CameraControl : MonoBehaviour
             {
 	            if (Input.mouseScrollDelta.y > 0)
 	            {
-		            Debug.Log("scrolling");
 		            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 		            float distance1;
 		            Vector3 point1 = new Vector3();
@@ -107,8 +106,7 @@ public class CameraControl : MonoBehaviour
 			            point2 = ray.GetPoint(distance2);
 		            }
 		            Vector3 difference = point1 - point2;
-		            transform.position += difference;
-		            //transform.Translate(difference);
+		            transform.Translate(difference);
 	            }
 	            else
 	            {

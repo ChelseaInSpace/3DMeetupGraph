@@ -21,7 +21,6 @@ public class NodeHandler : MonoBehaviour
     static UINodeList NodeListDisplay;
     static Node currentNode;
     static Transform me;
-
     static double[] values;
     static double[][] vectors;
     static List<Node> discardedNodes = new List<Node>();
@@ -51,7 +50,6 @@ public class NodeHandler : MonoBehaviour
             AddNode(newNode);
         }
     }
-
 
     public static void CalculateEigenVectorsValues()
     {
@@ -112,7 +110,8 @@ public class NodeHandler : MonoBehaviour
         NodeList = NodeList.Union(discardedNodes).ToList();
         ConnectionHandler.ConnectionList.AddRange(discardedConnections);
         FixOverlaps();
-        RainbowHSVColours();
+        if(SettingsData.RecolourNodesOnPositioning)
+            RainbowHSVColours();
         discardedConnections.Clear();
         discardedNodes.Clear();
         ConnectionHandler.RenderConnections();
