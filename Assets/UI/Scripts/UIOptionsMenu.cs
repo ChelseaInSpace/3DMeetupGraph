@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,8 +15,17 @@ public class UIOptionsMenu : MonoBehaviour
     List<Resolution> filteredResolutions;
     double currentRefreshRate;
     int currentResolutionIndex = 0;
+    
+    public void SetResolution(int resolutionIndex)
+    {
+        Resolution resolution = filteredResolutions[resolutionIndex];
+        Screen.SetResolution(resolution.width, resolution.height, SettingsData.Fullscreen);
+        SettingsData.ResolutionWidth = resolution.width;
+        SettingsData.ResolutionHeight = resolution.height;
+        SettingsData.RefreshRate = resolution.refreshRateRatio.value;
+    }
 
-    void Start()
+    private void OnEnable()
     {
         resolutions = Screen.resolutions;
         filteredResolutions = new List<Resolution>();
@@ -31,7 +41,7 @@ public class UIOptionsMenu : MonoBehaviour
         {
             string option = filteredResolutions[i].width + "x" + filteredResolutions[i].height;
             RefreshOptions.Add(option);
-            if (filteredResolutions[i].width == Screen.currentResolution.width && filteredResolutions[i].height == Screen.currentResolution.height)
+            if (filteredResolutions[i].width == Screen.width && filteredResolutions[i].height == Screen.height)
             {
                 currentResolutionIndex = i;
             }
@@ -39,24 +49,15 @@ public class UIOptionsMenu : MonoBehaviour
         MyDropdown.AddOptions(RefreshOptions);
         MyDropdown.value = currentResolutionIndex;
         MyDropdown.RefreshShownValue();
-
-        VsyncToggle.isOn = SettingsData.Fullscreen;
-        VsyncToggle.isOn = SettingsData.VSync; 
+        FullscreenToggle.isOn = SettingsData.Fullscreen;
+        VsyncToggle.isOn = SettingsData.VSync;
     }
 
-    public void SetResolution(int resolutionIndex)
-    {
-        Resolution resolution = filteredResolutions[resolutionIndex];
-        Screen.SetResolution(resolution.width, resolution.height, SettingsData.Fullscreen);
-        SettingsData.ResolutionWidth = resolution.width;
-        SettingsData.ResolutionHeight = resolution.height;
-        SettingsData.RefreshRate = resolution.refreshRateRatio.value;
-    }
-    
     public void ToggleFullscreen(bool isFullscreen)
     {
         SettingsData.Fullscreen = isFullscreen;
         Screen.fullScreen = isFullscreen;
+        MyDropdown.value = currentResolutionIndex;
     }
 
     public void ToggleVsync(bool vsyncEnabled)

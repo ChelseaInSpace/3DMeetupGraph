@@ -2748,7 +2748,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 3D Meetup Graph v0.94
+  m_text: 3D Meetup Graph v0.95
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7652cbd9878baad478a2f0dc221d4518, type: 2}
   m_sharedMaterial: {fileID: -3559525847219054987, guid: 7652cbd9878baad478a2f0dc221d4518, type: 2}

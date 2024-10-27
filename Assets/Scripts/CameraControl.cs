@@ -91,40 +91,42 @@ public class CameraControl : MonoBehaviour
             
             if (Input.GetKey(KeyCode.E))
             {
-            	transform.Translate(Vector3.up * flySpeed/5);
+            	transform.Translate(Vector3.down * flySpeed/2);
             }
             else if (Input.GetKey(KeyCode.Q))
             {
-            	transform.Translate(Vector3.down * flySpeed/5);
+            	transform.Translate(Vector3.up * flySpeed/2);
             }
             
             //Scroll wheel zoom WIP
             if (Input.mouseScrollDelta.y != 0)
             {
-	            if (Input.mouseScrollDelta.y > 0)
-	            {
-		            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-		            float distance1;
-		            Vector3 point1 = new Vector3();
-		            Vector3 point2 = new Vector3();
-		            if (plane.Raycast(ray, out distance1))
-		            {
-			            point1 = ray.GetPoint(distance1);
-		            }
-		            transform.Translate(Input.mouseScrollDelta.y * 0.2f * Vector3.forward);
-		            Ray ray2 = Camera.main.ScreenPointToRay(Input.mousePosition);
-		            float distance2;
-		            if (plane.Raycast(ray2, out distance2))
-		            {
-			            point2 = ray.GetPoint(distance2);
-		            }
-		            Vector3 difference = point1 - point2;
-		            transform.Translate(difference);
-	            }
-	            else
-	            {
-		            transform.Translate(Input.mouseScrollDelta.y * 0.2f * Vector3.forward);
-	            }
+	            float scroll = SettingsData.InvertScroll ? -Input.mouseScrollDelta.y : Input.mouseScrollDelta.y;
+	            // if (scroll > 0)
+	            // {
+		           //  Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+		           //  float distance1;
+		           //  Vector3 point1 = new Vector3();
+		           //  Vector3 point2 = new Vector3();
+		           //  if (plane.Raycast(ray, out distance1))
+		           //  {
+			          //   point1 = ray.GetPoint(distance1);
+		           //  }
+		           //  transform.Translate(scroll * 0.2f * Vector3.forward);
+		           //  Ray ray2 = Camera.main.ScreenPointToRay(Input.mousePosition);
+		           //  float distance2;
+		           //  if (plane.Raycast(ray2, out distance2))
+		           //  {
+			          //   point2 = ray.GetPoint(distance2);
+		           //  }
+		           //  Vector3 difference = point1 - point2;
+		           //  transform.Translate(difference);
+	            // }
+	            // else
+	            // {
+		           //  transform.Translate(scroll * 0.2f * Vector3.forward);
+	            // }
+	            transform.Translate(scroll * 0.4f * Vector3.forward);
             }
 		}
 	}
