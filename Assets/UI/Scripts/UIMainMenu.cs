@@ -7,6 +7,8 @@ using UnityEngine.SceneManagement;
 public class UIMainMenu : MonoBehaviour
 {
     public GameObject MainButtonPanel;
+    public UIOptionsMenu OptionsPanelPrefab;
+    UIOptionsMenu myOptionsPanel;    
     
     public void LoadSceneFresh()
     {
@@ -17,5 +19,17 @@ public class UIMainMenu : MonoBehaviour
     public void Exit()
     {
         Application.Quit();
+    }
+
+    public void ShowOptions()
+    {
+        if (myOptionsPanel == null)
+        {
+            myOptionsPanel = Instantiate(OptionsPanelPrefab, transform);
+        }
+        else
+        {
+            myOptionsPanel.gameObject.SetActive(true);
+        }
     }
 }
