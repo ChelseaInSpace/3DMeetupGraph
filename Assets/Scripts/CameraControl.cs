@@ -44,8 +44,10 @@ public class CameraControl : MonoBehaviour
             	Cursor.lockState = CursorLockMode.None;
             }
 
+            //Mouse drag around WIP
             if (Input.GetMouseButton(2))
-            { Debug.Log(Cursor.lockState.ToString());
+            { 
+	            Debug.Log(Cursor.lockState.ToString());
 	            Cursor.lockState = CursorLockMode.Locked;
 	            Debug.Log(Cursor.lockState.ToString());
 	            transform.Translate(Vector3.forward * flySpeed * Input.GetAxis("Mouse X"));
@@ -56,6 +58,7 @@ public class CameraControl : MonoBehaviour
 	            Cursor.lockState = CursorLockMode.None;
             }
     
+            //Keyboard fly around movement
             if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
             {
             	flySpeed *= accelerationRatio;
@@ -85,7 +88,17 @@ public class CameraControl : MonoBehaviour
             {
             	transform.Translate(Vector3.right * flySpeed * Input.GetAxis("Horizontal"));
             }
-
+            
+            if (Input.GetKey(KeyCode.E))
+            {
+            	transform.Translate(Vector3.up * flySpeed/5);
+            }
+            else if (Input.GetKey(KeyCode.Q))
+            {
+            	transform.Translate(Vector3.down * flySpeed/5);
+            }
+            
+            //Scroll wheel zoom WIP
             if (Input.mouseScrollDelta.y != 0)
             {
 	            if (Input.mouseScrollDelta.y > 0)
@@ -112,15 +125,6 @@ public class CameraControl : MonoBehaviour
 	            {
 		            transform.Translate(Input.mouseScrollDelta.y * 0.2f * Vector3.forward);
 	            }
-            }
-    
-            if (Input.GetKey(KeyCode.E))
-            {
-            	transform.Translate(Vector3.up * flySpeed/5);
-            }
-            else if (Input.GetKey(KeyCode.Q))
-            {
-            	transform.Translate(Vector3.down * flySpeed/5);
             }
 		}
 	}
