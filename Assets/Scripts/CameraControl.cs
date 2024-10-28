@@ -9,7 +9,7 @@ public class CameraControl : MonoBehaviour
     public static bool MovementEnabled = true;
 	static Transform me;
 	Plane plane = new(Vector3.forward, 0);
-
+	Vector3 mouseOrigin;
 
 	//Movement controls
 	float flySpeed = 0.05f;
@@ -20,6 +20,7 @@ public class CameraControl : MonoBehaviour
 	float rotateSpeed = 90f;
 	float mouseX;
 	float mouseY;
+	
     void Awake()
     {
 		me = gameObject.transform;
@@ -32,7 +33,8 @@ public class CameraControl : MonoBehaviour
 			//Mouse lookaround
             if(Input.GetMouseButton(1))
             {
-            	Cursor.lockState = CursorLockMode.Locked;
+	            //TODO: make mouse lock an option via toggle
+            	//Cursor.lockState = CursorLockMode.Locked;
             	mouseX = SettingsData.InvertCamRotX ? -Input.GetAxis("Mouse X") : Input.GetAxis("Mouse X");
             	mouseY = SettingsData.InvertCamRotY ? -Input.GetAxis("Mouse Y") : Input.GetAxis("Mouse Y");
 	            transform.RotateAround (Vector3.zero,Vector3.up,mouseX * rotateSpeed * Time.deltaTime);
@@ -41,21 +43,23 @@ public class CameraControl : MonoBehaviour
             }
             if(Input.GetMouseButtonUp(1))
             {
-            	Cursor.lockState = CursorLockMode.None;
+            	//Cursor.lockState = CursorLockMode.None;
             }
 
             //Mouse drag around WIP
             if (Input.GetMouseButton(2))
-            { 
-	            Debug.Log(Cursor.lockState.ToString());
-	            Cursor.lockState = CursorLockMode.Locked;
-	            Debug.Log(Cursor.lockState.ToString());
-	            transform.Translate(Vector3.forward * flySpeed * Input.GetAxis("Mouse X"));
-	            transform.Translate(Vector3.right * flySpeed * Input.GetAxis("Mouse Y"));
+            {
+	            //mouseOrigin = Input.mousePosition;
+	            //Cursor.lockState = CursorLockMode.Locked;
+	            float mouseX = SettingsData.InvertDrag ? -Input.GetAxis("Mouse X") : Input.GetAxis("Mouse X");
+	            float mouseY = SettingsData.InvertDrag ? -Input.GetAxis("Mouse Y") : Input.GetAxis("Mouse Y");
+	            transform.Translate(Vector3.right * (flySpeed * mouseX));
+	            transform.Translate(Vector3.up * (flySpeed * mouseY));
             }
             if (Input.GetMouseButtonUp(2))
             {
-	            Cursor.lockState = CursorLockMode.None;
+	            //Cursor.lockState = CursorLockMode.None;
+	            //Input.mousePosition = mouseOrigin;
             }
     
             //Keyboard fly around movement
@@ -98,35 +102,12 @@ public class CameraControl : MonoBehaviour
             	transform.Translate(Vector3.up * flySpeed/2);
             }
             
-            //Scroll wheel zoom WIP
+            //Scroll wheel zoom
             if (Input.mouseScrollDelta.y != 0)
             {
 	            float scroll = SettingsData.InvertScroll ? -Input.mouseScrollDelta.y : Input.mouseScrollDelta.y;
-	            // if (scroll > 0)
-	            // {
-		           //  Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-		           //  float distance1;
-		           //  Vector3 point1 = new Vector3();
-		           //  Vector3 point2 = new Vector3();
-		           //  if (plane.Raycast(ray, out distance1))
-		           //  {
-			          //   point1 = ray.GetPoint(distance1);
-		           //  }
-		           //  transform.Translate(scroll * 0.2f * Vector3.forward);
-		           //  Ray ray2 = Camera.main.ScreenPointToRay(Input.mousePosition);
-		           //  float distance2;
-		           //  if (plane.Raycast(ray2, out distance2))
-		           //  {
-			          //   point2 = ray.GetPoint(distance2);
-		           //  }
-		           //  Vector3 difference = point1 - point2;
-		           //  transform.Translate(difference);
-	            // }
-	            // else
-	            // {
-		           //  transform.Translate(scroll * 0.2f * Vector3.forward);
-	            // }
-	            transform.Translate(scroll * 0.4f * Vector3.forward);
+	            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+	            transform.Translate((scroll * 0.4f * ray.direction), Space.World);
             }
 		}
 	}
