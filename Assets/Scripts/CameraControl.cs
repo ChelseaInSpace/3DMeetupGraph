@@ -33,8 +33,8 @@ public class CameraControl : MonoBehaviour
 			//Mouse lookaround
             if(Input.GetMouseButton(1))
             {
-	            //TODO: make mouse lock an option via toggle
-            	//Cursor.lockState = CursorLockMode.Locked;
+	            if(SettingsData.LockMouseOnCameraMovement)
+            		Cursor.lockState = CursorLockMode.Locked;
             	mouseX = SettingsData.InvertCamRotX ? -Input.GetAxis("Mouse X") : Input.GetAxis("Mouse X");
             	mouseY = SettingsData.InvertCamRotY ? -Input.GetAxis("Mouse Y") : Input.GetAxis("Mouse Y");
 	            transform.RotateAround (Vector3.zero,Vector3.up,mouseX * rotateSpeed * Time.deltaTime);
@@ -43,14 +43,14 @@ public class CameraControl : MonoBehaviour
             }
             if(Input.GetMouseButtonUp(1))
             {
-            	//Cursor.lockState = CursorLockMode.None;
+            	Cursor.lockState = CursorLockMode.None;
             }
 
             //Mouse drag around WIP
             if (Input.GetMouseButton(2))
             {
-	            //mouseOrigin = Input.mousePosition;
-	            //Cursor.lockState = CursorLockMode.Locked;
+	            if(SettingsData.LockMouseOnCameraMovement)
+		            Cursor.lockState = CursorLockMode.Locked;
 	            float mouseX = SettingsData.InvertDrag ? -Input.GetAxis("Mouse X") : Input.GetAxis("Mouse X");
 	            float mouseY = SettingsData.InvertDrag ? -Input.GetAxis("Mouse Y") : Input.GetAxis("Mouse Y");
 	            transform.Translate(Vector3.right * (flySpeed * mouseX));
@@ -58,8 +58,7 @@ public class CameraControl : MonoBehaviour
             }
             if (Input.GetMouseButtonUp(2))
             {
-	            //Cursor.lockState = CursorLockMode.None;
-	            //Input.mousePosition = mouseOrigin;
+	            Cursor.lockState = CursorLockMode.None;
             }
     
             //Keyboard fly around movement
