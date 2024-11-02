@@ -17,8 +17,7 @@ public class Node : MonoBehaviour
 
     void Update()
     {
-        //TODO: fix billboarding
-        MyText.transform.LookAt(CameraControl.GetCameraTransform());
+        MyText.transform.rotation = CameraControl.GetCameraTransform().rotation; 
     }
 
     public void Initialise(string NodeName, Color c)
