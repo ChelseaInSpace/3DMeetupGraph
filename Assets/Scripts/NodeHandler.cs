@@ -80,9 +80,6 @@ public class NodeHandler : MonoBehaviour
             double[] eigenVectorOfPersonI = vectors[i];
             Vector3 pos = new Vector3((float)eigenVectorOfPersonI[eigenVectorOfPersonI.Length - 2] * 7, (float)eigenVectorOfPersonI[eigenVectorOfPersonI.Length - 3] * 7, (float)eigenVectorOfPersonI[eigenVectorOfPersonI.Length - 4] * 7);
             n.transform.position = pos;
-            //if(vectors.Length > 6)
-            //    n.SetColour(RGBFromMatrix(vectors, i));
-            //ClampPosition(n);
         }
         discardedNodes.Reverse();
         foreach(Node node in discardedNodes)
@@ -194,7 +191,6 @@ public class NodeHandler : MonoBehaviour
         }
         float tempBlue = (float)((vectors[nodeIndex][vectors.Length - 7] - minimumBlue) / (maximumBlue - minimumBlue));
 
-        Debug.Log("Red is " + tempRed + "; Green is " + tempGreen + "; Blue is " + tempBlue);
         return new Color(tempRed, tempGreen, tempBlue);
     }
 
@@ -208,26 +204,25 @@ public class NodeHandler : MonoBehaviour
         }
     }
 
-    public static void ClampPosition(Node n)
-    {
-        //disgusting hacky remote position fix
-        float newX = n.transform.position.x;
-        while (Math.Abs(newX) > 2.5)
-        {
-            newX /= 1.5f;
-        }
-        float newY = n.transform.position.y;
-        while (Math.Abs(newY) > 2.5)
-        {
-            newY /= 1.5f;
-        }
-        float newZ = n.transform.position.z;
-        while (Math.Abs(newZ) > 2.5)
-        {
-            newZ /= 1.5f;
-        }
-        n.transform.position = new Vector3(newX, newY, newZ);
-    }
+    //public static void ClampPosition(Node n)
+    //{
+    //    float newX = n.transform.position.x;
+    //    while (Math.Abs(newX) > 2.5)
+    //    {
+    //        newX /= 1.5f;
+    //    }
+    //    float newY = n.transform.position.y;
+    //    while (Math.Abs(newY) > 2.5)
+    //    {
+    //        newY /= 1.5f;
+    //    }
+    //    float newZ = n.transform.position.z;
+    //    while (Math.Abs(newZ) > 2.5)
+    //    {
+    //        newZ /= 1.5f;
+    //    }
+    //    n.transform.position = new Vector3(newX, newY, newZ);
+    //}
 
     public static void UpdateCurrentNode(Node newCurrentNode)
     {

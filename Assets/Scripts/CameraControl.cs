@@ -30,9 +30,10 @@ public class CameraControl : MonoBehaviour
 	{
 		if (!EventSystem.current.IsPointerOverGameObject() && MovementEnabled)
 		{
-			//Mouse lookaround
+			//Mouse look around
             if(Input.GetMouseButton(1))
             {
+                //TODO: add rolling around own axis via modifier?
 	            if(SettingsData.LockMouseOnCameraMovement)
             		Cursor.lockState = CursorLockMode.Locked;
             	mouseX = SettingsData.InvertCamRotX ? -Input.GetAxis("Mouse X") : Input.GetAxis("Mouse X");
@@ -46,7 +47,7 @@ public class CameraControl : MonoBehaviour
             	Cursor.lockState = CursorLockMode.None;
             }
 
-            //Mouse drag around WIP
+            //Mouse drag around
             if (Input.GetMouseButton(2))
             {
 	            if(SettingsData.LockMouseOnCameraMovement)

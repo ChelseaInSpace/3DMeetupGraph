@@ -17,6 +17,7 @@ public class Node : MonoBehaviour
 
     void Update()
     {
+        //TODO: fix billboarding
         MyText.transform.LookAt(CameraControl.GetCameraTransform());
     }
 
@@ -44,6 +45,7 @@ public class Node : MonoBehaviour
 
     private void OnMouseDrag()
     {
+        //TODO: add function to move Nodes around via drag
         if (NodeHandler.GetCurrentNode() == this)
         {
             dragCounter++;
@@ -84,6 +86,7 @@ public class Node : MonoBehaviour
 
     public void SetActiveColour(Color colour)
     {
+        //TODO: make a prettier selection highlight effect
         MyRenderer.material.color = colour;
     }
     
