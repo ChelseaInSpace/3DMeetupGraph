@@ -6080,11 +6080,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4182271008872855535, guid: 134347ff4e865e790a3a5f0f5bf3d5d2, type: 3}
       propertyPath: m_text
-      value: '
-
-        ''Autoposition Nodes'' to calculate fancy spectral embedding
-        for Node positions; position data will not be saved so re-run this manually
-        after loading a project.'
+      value: '''Autoposition Nodes'' to calculate fancy spectral embedding for Node
+        positions; position data will not be saved so re-run this manually after
+        loading a project.'
       objectReference: {fileID: 0}
     - target: {fileID: 5867086648347257680, guid: 134347ff4e865e790a3a5f0f5bf3d5d2, type: 3}
       propertyPath: m_AnchorMax.y
