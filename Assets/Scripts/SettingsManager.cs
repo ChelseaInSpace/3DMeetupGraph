@@ -26,6 +26,6 @@ public class SettingsManager : MonoBehaviour
         PlayerPrefs.SetInt("InvertCamRotX", SettingsData.InvertCamRotX ? 1 : 0);
         PlayerPrefs.SetInt("InvertCamRotY", SettingsData.InvertCamRotY ? 1 : 0);
         PlayerPrefs.SetInt("LockMouseOnCameraMovement", SettingsData.LockMouseOnCameraMovement ? 1 : 0);
-        PlayerPrefs.SetInt("RecolourNOdesOnPositioning", SettingsData.RecolourNodesOnPositioning ? 1 : 0);
+        PlayerPrefs.SetInt("RecolourNodesOnPositioning", SettingsData.RecolourNodesOnPositioning ? 1 : 0);
     }
 }

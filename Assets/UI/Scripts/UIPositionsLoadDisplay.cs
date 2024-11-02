@@ -5,7 +5,7 @@ using TMPro;
 using System.Threading.Tasks;
 using UnityEngine.UI;
 
-public class UIMatrixDisplay : MonoBehaviour
+public class UIPositionsLoadDisplay : MonoBehaviour
 {
     public Transform LoadPanel;
     public RectTransform Circle;
