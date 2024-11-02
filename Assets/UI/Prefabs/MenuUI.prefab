@@ -1467,7 +1467,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59f74575c4612864b9d50d9b155e71c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MainButtonPanel: {fileID: 7908818863754435384}
   OptionsPanelPrefab: {fileID: 322329031469971475, guid: aedffb60675b419c4b3f9f32c44d2101, type: 3}
 --- !u!1 &4129025306435086662
 GameObject:
@@ -2748,7 +2747,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 3D Meetup Graph v0.96
+  m_text: 3D Meetup Graph v0.97
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7652cbd9878baad478a2f0dc221d4518, type: 2}
   m_sharedMaterial: {fileID: -3559525847219054987, guid: 7652cbd9878baad478a2f0dc221d4518, type: 2}

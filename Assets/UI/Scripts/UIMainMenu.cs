@@ -17,6 +17,7 @@ public class UIMainMenu : MonoBehaviour
 
     public void Exit()
     {
+        SettingsManager.SaveSettings();
         Application.Quit();
     }
 
