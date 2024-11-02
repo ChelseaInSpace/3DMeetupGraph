@@ -1,14 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Vector3 = UnityEngine.Vector3;
 
 public class CameraControl : MonoBehaviour
 {
     public static bool MovementEnabled = true;
-	static Transform me;
-	Plane plane = new(Vector3.forward, 0);
+	static Transform me; 
 	Vector3 mouseOrigin;
 
 	//Movement controls
@@ -20,6 +21,7 @@ public class CameraControl : MonoBehaviour
 	float rotateSpeed = 90f;
 	float mouseX;
 	float mouseY;
+	float mouse;
 	
     void Awake()
     {
@@ -33,14 +35,20 @@ public class CameraControl : MonoBehaviour
 			//Mouse look around
             if(Input.GetMouseButton(1))
             {
-                //TODO: add rolling around own axis via modifier?
 	            if(SettingsData.LockMouseOnCameraMovement)
-            		Cursor.lockState = CursorLockMode.Locked;
-            	mouseX = SettingsData.InvertCamRotX ? -Input.GetAxis("Mouse X") : Input.GetAxis("Mouse X");
-            	mouseY = SettingsData.InvertCamRotY ? -Input.GetAxis("Mouse Y") : Input.GetAxis("Mouse Y");
-	            transform.RotateAround (Vector3.zero,Vector3.up,mouseX * rotateSpeed * Time.deltaTime);
-	            //TODO: figure out jittering
-	            transform.RotateAround(Vector3.zero, transform.right, mouseY * rotateSpeed * Time.deltaTime);
+		            Cursor.lockState = CursorLockMode.Locked;
+	            if (!Input.GetKey(KeyCode.LeftShift))
+	            {
+		            mouseX = SettingsData.InvertCamRotX ? -Input.GetAxis("Mouse X") : Input.GetAxis("Mouse X");
+		            mouseY = SettingsData.InvertCamRotY ? -Input.GetAxis("Mouse Y") : Input.GetAxis("Mouse Y");
+		            transform.RotateAround (Vector3.zero,transform.up,mouseX * rotateSpeed * Time.deltaTime);
+		            transform.RotateAround(Vector3.zero, transform.right, mouseY * rotateSpeed * Time.deltaTime);
+	            }
+	            else
+	            {
+		            mouse = Input.GetAxis("Mouse X");
+		            transform.RotateAround(Vector3.zero, transform.forward, mouse * rotateSpeed * 2 * Time.deltaTime);
+	            }
             }
             if(Input.GetMouseButtonUp(1))
             {
