@@ -37,17 +37,20 @@ public class CameraControl : MonoBehaviour
             {
 	            if(SettingsData.LockMouseOnCameraMovement)
 		            Cursor.lockState = CursorLockMode.Locked;
-	            if (!Input.GetKey(KeyCode.LeftShift))
+                //TODO: improve movement around node and reimplement
+                //Vector3 target = NodeHandler.HasCurrentNode() ? NodeHandler.GetCurrentNode().transform.position : Vector3.zero;
+                Vector3 target = Vector3.zero;
+                if (!Input.GetKey(KeyCode.LeftShift))
 	            {
 		            mouseX = SettingsData.InvertCamRotX ? -Input.GetAxis("Mouse X") : Input.GetAxis("Mouse X");
 		            mouseY = SettingsData.InvertCamRotY ? -Input.GetAxis("Mouse Y") : Input.GetAxis("Mouse Y");
-		            transform.RotateAround (Vector3.zero,transform.up,mouseX * rotateSpeed * Time.deltaTime);
-		            transform.RotateAround(Vector3.zero, transform.right, mouseY * rotateSpeed * Time.deltaTime);
+                    transform.RotateAround(target, transform.up, mouseX * rotateSpeed * Time.deltaTime);
+                    transform.RotateAround(target, transform.right, mouseY * rotateSpeed * Time.deltaTime);
 	            }
 	            else
 	            {
 		            mouse = Input.GetAxis("Mouse X");
-		            transform.RotateAround(Vector3.zero, transform.forward, mouse * rotateSpeed * 2 * Time.deltaTime);
+                    transform.RotateAround(target, transform.forward, mouse * rotateSpeed * 2 * Time.deltaTime);
 	            }
             }
             if(Input.GetMouseButtonUp(1))
@@ -122,8 +125,9 @@ public class CameraControl : MonoBehaviour
 	
 	public static void SetCameraGlobally(Vector3 pos)
 	{
-		//TODO: LERP and fix stuff
-		//me.position = new Vector3(pos.x, pos.y, pos.z-10);
+        //TODO: LERP and fix stuff
+        //me.position = pos;
+        //me.position -= me.forward.normalized * 3f;
 	}
 
 	public static Transform GetCameraTransform()
