@@ -9,7 +9,10 @@ public class Node : MonoBehaviour
     public TextMeshPro MyText;
     public MeshRenderer MyRenderer;
     public LineRenderer MyLine;
+    public Material GlowMaterial;
+
     Color myColour;
+    Material myMaterial;
     string myName = "Empty";
     int dragCounter = 0;
     Vector3 worldPosition;
@@ -26,6 +29,7 @@ public class Node : MonoBehaviour
         MyText.text = myName;
         MyText.color = c;
         myColour = c;
+        myMaterial = MyRenderer.material;
         ResetColour();
     }
 
@@ -85,12 +89,13 @@ public class Node : MonoBehaviour
 
     public void SetActiveColour(Color colour)
     {
-        //TODO: make a prettier selection highlight effect
-        MyRenderer.material.color = colour;
+        MyRenderer.material = GlowMaterial;
+        MyRenderer.material.SetColor("_Color", myColour);
     }
     
     public void ResetColour()
     {
+        MyRenderer.material = myMaterial;
         MyRenderer.material.color = myColour;
     }
 

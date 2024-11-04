@@ -123,6 +123,7 @@ MonoBehaviour:
   MyText: {fileID: 4925709051956386963}
   MyRenderer: {fileID: 5892530084498733209}
   MyLine: {fileID: 4385944516525907187}
+  GlowMaterial: {fileID: 2100000, guid: e0712a92216d7e946a41b4fb85488f1b, type: 2}
 --- !u!120 &4385944516525907187
 LineRenderer:
   serializedVersion: 2
