@@ -9,9 +9,12 @@ using Vector3 = UnityEngine.Vector3;
 public class CameraControl : MonoBehaviour
 {
     public static bool MovementEnabled = true;
-	static Transform me; 
+	static Transform me;
+	Vector3 startingPos;
 	Vector3 targetPos;
-	private bool isMoving = false;
+	float movingDistance;
+	float movingSpeed = 7.5f;
+	bool isMoving = false;
 
 	//Movement controls
 	float flySpeed = 0.05f;
@@ -34,7 +37,16 @@ public class CameraControl : MonoBehaviour
 		//Smoothly move to target position while player inputs are disabled
 		if (isMoving)
 		{
-			transform.position = Vector3.MoveTowards(transform.position, targetPos, Time.deltaTime * 15f);
+			float currentDistance = Vector3.Distance(transform.position, targetPos);
+			float distancePercent = currentDistance / movingDistance;
+			float speed;
+			if (distancePercent >= 0.7)
+				speed = movingSpeed * (0.7f / distancePercent);
+			else if (distancePercent <= 0.3)
+				speed = movingSpeed * (0.7f + distancePercent);
+			else
+				speed = movingSpeed;
+			transform.position = Vector3.MoveTowards(transform.position, targetPos, Time.deltaTime * speed);
 			if(transform.position == targetPos)
 				isMoving = false;
 		}
@@ -155,14 +167,20 @@ public class CameraControl : MonoBehaviour
 	
 	public void SetCameraTarget(Vector3 pos)
 	{
-		targetPos = pos - me.forward.normalized * 2f;
-		if (targetPos != transform.position)
-			isMoving = true;
+		if(SettingsData.MoveCamOnSelection)
+        {
+			targetPos = pos - me.forward * 2f;
+			startingPos = transform.position;
+			movingDistance = Vector3.Distance(startingPos, targetPos);
+			movingSpeed = movingDistance > 4 ? 20f : 7.5f;
+			if (targetPos != transform.position)
+				isMoving = true;
+		}
 	}
 
 	public Vector3 GetPointInFrontOfCamera()
     {
-		Vector3 target = transform.position + transform.forward.normalized * 7f;
+		Vector3 target = transform.position + transform.forward * 7f;
 		return target;
     }
 

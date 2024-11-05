@@ -10,4 +10,5 @@ public static class SettingsData
     public static bool InvertDrag = true;
     public static bool LockMouseOnCameraMovement = false;
     public static bool RecolourNodesOnPositioning = true;
+    public static bool MoveCamOnSelection = true;
 }
