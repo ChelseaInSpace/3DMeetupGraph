@@ -41,11 +41,11 @@ public class CameraControl : MonoBehaviour
 		
 		else if (!EventSystem.current.IsPointerOverGameObject() && MovementEnabled)
 		{
+			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			//Set current Node when Left Mouse Button is clicked
 			if (Input.GetMouseButtonDown(0))
 			{
-				Ray ray1 = Camera.main.ScreenPointToRay(Input.mousePosition);
-				if (Physics.Raycast(ray1, out RaycastHit hit))
+				if (Physics.Raycast(ray, out RaycastHit hit))
 				{
 					Node hitNode = hit.collider.gameObject.GetComponent<Node>();
 					if (hitNode)
@@ -68,8 +68,8 @@ public class CameraControl : MonoBehaviour
             {
 	            if(SettingsData.LockMouseOnCameraMovement)
 		            Cursor.lockState = CursorLockMode.Locked;
-                //TODO: improve movement around node and reimplement
-                Vector3 target = NodeHandler.HasCurrentNode() ? NodeHandler.GetCurrentNode().transform.position : Vector3.zero;
+
+                Vector3 target = NodeHandler.HasCurrentNode() ? NodeHandler.GetCurrentNode().transform.position : GetPointInFrontOfCamera();
                 if (!Input.GetKey(KeyCode.LeftShift))
 	            {
 		            mouseX = SettingsData.InvertCamRotX ? -Input.GetAxis("Mouse X") : Input.GetAxis("Mouse X");
@@ -147,7 +147,6 @@ public class CameraControl : MonoBehaviour
             if (Input.mouseScrollDelta.y != 0)
             {
 	            float scroll = SettingsData.InvertScroll ? -Input.mouseScrollDelta.y : Input.mouseScrollDelta.y;
-	            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 	            transform.Translate((scroll * 0.4f * ray.direction), Space.World);
             }
 		}
@@ -159,6 +158,12 @@ public class CameraControl : MonoBehaviour
 		if (targetPos != transform.position)
 			isMoving = true;
 	}
+
+	public Vector3 GetPointInFrontOfCamera()
+    {
+		Vector3 target = transform.position + transform.forward.normalized * 7f;
+		return target;
+    }
 
 	public static Transform GetCameraTransform()
     {
