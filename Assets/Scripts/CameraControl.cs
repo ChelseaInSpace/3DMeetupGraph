@@ -42,6 +42,7 @@ public class CameraControl : MonoBehaviour
 		else if (!EventSystem.current.IsPointerOverGameObject() && MovementEnabled)
 		{
 			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
 			//Set current Node when Left Mouse Button is clicked
 			if (Input.GetMouseButtonDown(0))
 			{

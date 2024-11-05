@@ -50,25 +50,70 @@ public class NodeHandler : MonoBehaviour
         }
     }
 
-    public static void CalculateEigenVectorsValues()
+    public static void UpdateCurrentNode(Node newCurrentNode)
     {
-        discardedNodes = SeparateSingles();
-        float[,] matrix = CreateMatrix();
-        double[][] myMatrix = new double[(int)Mathf.Sqrt(matrix.Length)][];
-        for (int i = 0; i < Mathf.Sqrt(matrix.Length); i++)
+        if (currentNode != newCurrentNode)
         {
-            myMatrix[i] = new double[(int)Mathf.Sqrt(matrix.Length)];
-
-            for (int j = 0; j < Mathf.Sqrt(matrix.Length); j++)
-            {
-                myMatrix[i][j] = matrix[i, j];
-            }
+            if (currentNode)
+                currentNode.SetInactive();
+            currentNode = newCurrentNode;
+            currentNode.SetActive();
+            MyCamera.SetCameraTarget(currentNode.transform.position);
+            CurrentNodeDisplay.Fill(currentNode);
         }
-        double[][] eigenVectors;
-        double[] eigenValues;
-        PrincipalComponentProgram.Eigen(myMatrix, out eigenValues, out eigenVectors);
-        values = eigenValues;
-        vectors = eigenVectors;
+    }
+
+    public static void SetNoCurrentNode()
+    {
+        if (currentNode)
+        {
+            currentNode.SetInactive();
+            currentNode = null;
+            CurrentNodeDisplay.Empty();
+        }
+    }
+
+    public static bool HasCurrentNode()
+    {
+        return currentNode != null;
+    }
+
+    public static Node GetCurrentNode()
+    {
+        return currentNode;
+    }
+
+    public static void DeleteNode()
+    {
+        if (HasCurrentNode())
+        {
+            ConnectionHandler.RemoveConnectionsForNode(currentNode);
+            ConnectionHandler.RenderConnections();
+            NodeList.Remove(currentNode);
+            Destroy(currentNode.gameObject);
+            NodeListDisplay.InitialiseList();
+            currentNode = null;
+            CurrentNodeDisplay.Empty();
+        }
+    }
+
+    public static void RedrawNodeInfo()
+    {
+        NodeListDisplay.InitialiseList();
+        if (currentNode != null)
+            CurrentNodeDisplay.Fill(currentNode);
+        ConnectionHandler.RenderConnections();
+    }
+
+    public static void ClearAllNodes()
+    {
+        NodeList.Clear();
+        currentNode = null;
+    }
+
+    public static bool HasNodeOfName(string name)
+    {
+        return NodeList.Any(n => n.GetNodeName() == name);
     }
 
     public static void CalculatePositions()
@@ -113,6 +158,27 @@ public class NodeHandler : MonoBehaviour
         ConnectionHandler.RenderConnections();
     }
 
+    public static void CalculateEigenVectorsValues()
+    {
+        discardedNodes = SeparateSingles();
+        float[,] matrix = CreateMatrix();
+        double[][] myMatrix = new double[(int)Mathf.Sqrt(matrix.Length)][];
+        for (int i = 0; i < Mathf.Sqrt(matrix.Length); i++)
+        {
+            myMatrix[i] = new double[(int)Mathf.Sqrt(matrix.Length)];
+
+            for (int j = 0; j < Mathf.Sqrt(matrix.Length); j++)
+            {
+                myMatrix[i][j] = matrix[i, j];
+            }
+        }
+        double[][] eigenVectors;
+        double[] eigenValues;
+        PrincipalComponentProgram.Eigen(myMatrix, out eigenValues, out eigenVectors);
+        values = eigenValues;
+        vectors = eigenVectors;
+    }
+
     public static List<Node> SeparateSingles()
     {
         List<Node> singles = new List<Node>();
@@ -138,6 +204,52 @@ public class NodeHandler : MonoBehaviour
         return singles;
     }
 
+    public static bool HasOnlySingleConnection(Node n)
+    {
+        int count = 0;
+        foreach (ConnectionHandler.Connection c in ConnectionHandler.ConnectionList)
+        {
+            if (c.A.GetNodeName() == n.GetNodeName() || c.B.GetNodeName() == n.GetNodeName())
+            {
+                count++;
+            }
+        }
+        return count <= 1;
+    }
+
+    public static float[,] CreateMatrix()
+    {
+        List<Node> localNodes = NodeList;
+        List<ConnectionHandler.Connection> localConnections = ConnectionHandler.ConnectionList;
+
+        float[,] matrix = new float[localNodes.Count, localNodes.Count];
+
+        foreach (ConnectionHandler.Connection c in localConnections)
+        {
+            int i = localNodes.IndexOf(c.A);
+            int j = localNodes.IndexOf(c.B);
+
+            int cWeight = ConnectionHandler.GetAmountOfTotalConnectionsForPartnersOfConnection(c);
+            cWeight /= 2;
+            float value = 1f;
+            value -= (cWeight * 0.05f);
+            if (value <= 0)
+            {
+                value = 0.05f;
+            }
+            for (int x = 1; x <= cWeight; x++)
+            {
+                value -= Mathf.Pow(0.2f, x);
+            }
+
+            matrix[i, j] = -value;
+            matrix[j, i] = -value;
+            matrix[j, j] += value;
+            matrix[i, i] += value;
+        }
+        return matrix;
+    }
+
     public static void FixOverlaps()
     {
         foreach (Node n in NodeList)
@@ -154,6 +266,36 @@ public class NodeHandler : MonoBehaviour
             }
         }
     }
+
+    public static void RainbowHSVColours()
+    {
+        List<Node> temp = NodeList.OrderBy(n => n.transform.position.y).ToList();
+        float fraction = 1f / NodeList.Count;
+        for(int i = 0; i < temp.Count; i++)
+        {
+            temp[i].SetColour(Color.HSVToRGB(fraction * i, 0.75f, 0.75f));
+        }
+    }
+
+    //public static void ClampPosition(Node n)
+    //{
+    //    float newX = n.transform.position.x;
+    //    while (Math.Abs(newX) > 2.5)
+    //    {
+    //        newX /= 1.5f;
+    //    }
+    //    float newY = n.transform.position.y;
+    //    while (Math.Abs(newY) > 2.5)
+    //    {
+    //        newY /= 1.5f;
+    //    }
+    //    float newZ = n.transform.position.z;
+    //    while (Math.Abs(newZ) > 2.5)
+    //    {
+    //        newZ /= 1.5f;
+    //    }
+    //    n.transform.position = new Vector3(newX, newY, newZ);
+    //}
 
     // public static Color RGBFromMatrix(double[][] vectors, int nodeIndex)
     // {
@@ -192,146 +334,4 @@ public class NodeHandler : MonoBehaviour
     //
     //     return new Color(tempRed, tempGreen, tempBlue);
     // }
-
-    public static void RainbowHSVColours()
-    {
-        List<Node> temp = NodeList.OrderBy(n => n.transform.position.y).ToList();
-        float fraction = 1f / NodeList.Count;
-        for(int i = 0; i < temp.Count; i++)
-        {
-            temp[i].SetColour(Color.HSVToRGB(fraction * i, 0.75f, 0.75f));
-        }
-    }
-
-    //public static void ClampPosition(Node n)
-    //{
-    //    float newX = n.transform.position.x;
-    //    while (Math.Abs(newX) > 2.5)
-    //    {
-    //        newX /= 1.5f;
-    //    }
-    //    float newY = n.transform.position.y;
-    //    while (Math.Abs(newY) > 2.5)
-    //    {
-    //        newY /= 1.5f;
-    //    }
-    //    float newZ = n.transform.position.z;
-    //    while (Math.Abs(newZ) > 2.5)
-    //    {
-    //        newZ /= 1.5f;
-    //    }
-    //    n.transform.position = new Vector3(newX, newY, newZ);
-    //}
-
-    public static void UpdateCurrentNode(Node newCurrentNode)
-    {
-        if (currentNode != newCurrentNode)
-        {
-            if (currentNode)
-                currentNode.SetInactive();
-            currentNode = newCurrentNode;
-            currentNode.SetActive();
-            MyCamera.SetCameraTarget(currentNode.transform.position);
-            CurrentNodeDisplay.Fill(currentNode);
-        }
-    }
-
-    public static void SetNoCurrentNode()
-    {
-        if (currentNode)
-        {
-            currentNode.SetInactive();
-            currentNode = null;
-            CurrentNodeDisplay.Empty();
-        }
-    }
-
-    public static float[,] CreateMatrix()
-    {
-        List<Node> localNodes = NodeList;
-        List<ConnectionHandler.Connection> localConnections = ConnectionHandler.ConnectionList;
-
-        float[,] matrix = new float[localNodes.Count, localNodes.Count];
-
-        foreach (ConnectionHandler.Connection c in localConnections)
-        {
-            int i = localNodes.IndexOf(c.A);
-            int j = localNodes.IndexOf(c.B);
-
-            int cWeight = ConnectionHandler.GetAmountOfTotalConnectionsForPartnersOfConnection(c);
-            cWeight /= 2;
-            float value = 1f;
-            value -= (cWeight * 0.05f);
-            if (value <= 0)
-            {
-                value = 0.05f;
-            }
-            for (int x = 1; x <= cWeight; x++)
-            {
-                value -= Mathf.Pow(0.2f, x);
-            }
-
-            matrix[i, j] = -value;
-            matrix[j, i] = -value;
-            matrix[j, j] += value;
-            matrix[i, i] += value;
-        }
-        return matrix;
-    }
-
-    public static bool HasOnlySingleConnection(Node n)
-    {
-        int count = 0;
-        foreach(ConnectionHandler.Connection c in ConnectionHandler.ConnectionList)
-        {
-            if (c.A.GetNodeName() == n.GetNodeName() || c.B.GetNodeName() == n.GetNodeName())
-            {
-                count++;
-            }
-        }
-        return count <= 1;
-    }
-
-    public static bool HasCurrentNode()
-    {
-        return currentNode != null;
-    }
-
-    public static Node GetCurrentNode()
-    {
-        return currentNode;
-    }
-
-    public static void DeleteNode()
-    {
-        if(HasCurrentNode())
-        {
-            ConnectionHandler.RemoveConnectionsForNode(currentNode);
-            ConnectionHandler.RenderConnections();
-            NodeList.Remove(currentNode);
-            Destroy(currentNode.gameObject);
-            NodeListDisplay.InitialiseList();
-            currentNode = null;
-            CurrentNodeDisplay.Empty();
-        }
-    }
-
-    public static void RedrawNodeInfo()
-    {
-        NodeListDisplay.InitialiseList();
-        if(currentNode != null)
-            CurrentNodeDisplay.Fill(currentNode);
-        ConnectionHandler.RenderConnections();
-    }
-
-    public static void ClearAllNodes()
-    {
-        NodeList.Clear();
-        currentNode = null;
-    }
-
-    public static bool HasNodeOfName(string name)
-    {
-        return NodeList.Any(n => n.GetNodeName() == name);
-    }
 }

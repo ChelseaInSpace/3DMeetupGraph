@@ -7309,7 +7309,6 @@ MonoBehaviour:
   MyText: {fileID: 5297678972284958490}
   Parent: {fileID: 4630017225240298539}
   Viewport: {fileID: 8530561750800853529}
-  NodeEntryPrefab: {fileID: 1915214077419258187, guid: fa6826a1bda15534e8da62318943c2f6, type: 3}
   ConnectionEntryPrefab: {fileID: 3787377737462072342, guid: 60235e460c68e9a45b765b2c909b095a, type: 3}
 --- !u!1 &4844027692404909005
 GameObject:
@@ -8639,7 +8638,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 3948966830652748476}
   m_Direction: 0
   m_Value: 0
-  m_Size: 0.9999995
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
