@@ -15,12 +15,18 @@ public class Node : MonoBehaviour
     Material myMaterial;
     string myName = "Empty";
     int dragCounter = 0;
+    bool dragging;
     Vector3 worldPosition;
-    Plane plane = new(Vector3.forward, 0);
 
     void Update()
     {
         MyText.transform.rotation = CameraControl.GetCameraTransform().rotation; 
+    }
+
+    void FixedUpdate()
+    {
+        if (dragging)
+            dragCounter++;
     }
 
     public void Initialise(string NodeName, Color c)
@@ -43,12 +49,13 @@ public class Node : MonoBehaviour
         //TODO: add function to move Nodes around via drag
         if (NodeHandler.GetCurrentNode() == this)
         {
-            dragCounter++;
-            if (dragCounter > 7)
+            dragging = true;
+            if (dragCounter > 15)
             {
                 MyLine.enabled = true;
-                MyLine.SetPosition(0, this.transform.position);
+                MyLine.SetPosition(0, transform.position);
                 float distance;
+                Plane plane = new(-CameraControl.GetCameraTransform().forward, transform.position);
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 if (plane.Raycast(ray, out distance))
                 {
@@ -76,6 +83,7 @@ public class Node : MonoBehaviour
                 }
             }
         }
+        dragging = false;
         dragCounter = 0;
     }
 
