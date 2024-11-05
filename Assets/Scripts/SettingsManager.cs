@@ -17,6 +17,7 @@ public class SettingsManager : MonoBehaviour
         SettingsData.InvertDrag = PlayerPrefs.GetInt("InvertDrag", 1) != 0;
         SettingsData.LockMouseOnCameraMovement = PlayerPrefs.GetInt("LockMouseOnCameraMovement", 0) != 0;
         SettingsData.RecolourNodesOnPositioning = PlayerPrefs.GetInt("RecolourNodesOnPositioning", 1) != 0;
+        SettingsData.MoveCamOnSelection = PlayerPrefs.GetInt("MoveCamOnSelection", 1) != 0;
     }
 
     public static void SaveSettings()
@@ -27,5 +28,6 @@ public class SettingsManager : MonoBehaviour
         PlayerPrefs.SetInt("InvertCamRotY", SettingsData.InvertCamRotY ? 1 : 0);
         PlayerPrefs.SetInt("LockMouseOnCameraMovement", SettingsData.LockMouseOnCameraMovement ? 1 : 0);
         PlayerPrefs.SetInt("RecolourNodesOnPositioning", SettingsData.RecolourNodesOnPositioning ? 1 : 0);
+        PlayerPrefs.SetInt("MoveCamOnSelection", SettingsData.MoveCamOnSelection ? 1 : 0);
     }
 }

@@ -16,6 +16,7 @@ public class UIOptionsMenu : MonoBehaviour
     public Toggle ControlsInvertDrag;
     public Toggle ControlsMouseLock;
     public Toggle ControlsAutocolourNodes;
+    public Toggle ControlsCameraMovement;
 
     List<Resolution> filteredResolutions;
     int currentResolutionIndex = -1;
@@ -47,6 +48,7 @@ public class UIOptionsMenu : MonoBehaviour
         ControlsInvertDrag.isOn = SettingsData.InvertDrag;
         ControlsMouseLock.isOn = SettingsData.LockMouseOnCameraMovement;
         ControlsAutocolourNodes.isOn = SettingsData.RecolourNodesOnPositioning;
+        ControlsCameraMovement.isOn = SettingsData.MoveCamOnSelection;
     }
     
     void GenerateResolutionsDropdown()
@@ -116,5 +118,10 @@ public class UIOptionsMenu : MonoBehaviour
     public void ToggleNodeColouring(bool isNodeColouring)
     {
         SettingsData.RecolourNodesOnPositioning = isNodeColouring;
+    }
+
+    public void ToggleCameraMovement(bool isCameraMovement)
+    {
+        SettingsData.MoveCamOnSelection = isCameraMovement;
     }
 }
