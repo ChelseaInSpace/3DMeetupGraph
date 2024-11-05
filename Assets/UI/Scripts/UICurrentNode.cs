@@ -9,12 +9,11 @@ public class UICurrentNode : MonoBehaviour
     public TMP_Text MyText;
     public Transform Parent;
     public Transform Viewport;
-    public Button NodeEntryPrefab;
     public Transform ConnectionEntryPrefab;
     private List<Transform> entries = new List<Transform>();
     private Node referencedNode;
 
-    public void Initialise(Node n)
+    public void Fill(Node n)
     {
         referencedNode = n;
         MyText.text = referencedNode.GetNodeName();
@@ -37,11 +36,11 @@ public class UICurrentNode : MonoBehaviour
 
     public void ListConnections(Node no)
     {
-        if (no != null)
+        if (no)
         {
             foreach (Transform t in entries)
             {
-                if(t!=null)
+                if(t)
                     Destroy(t.gameObject);
             }
             entries.Clear();

@@ -230,11 +230,9 @@ public class NodeHandler : MonoBehaviour
             if (currentNode)
                 currentNode.SetInactive();
             currentNode = newCurrentNode;
-            Color c = Color.white;
-            c.a = 0.4f;
-            currentNode.SetActive(c);
+            currentNode.SetActive();
             MyCamera.SetCameraTarget(currentNode.transform.position);
-            CurrentNodeDisplay.Initialise(currentNode);
+            CurrentNodeDisplay.Fill(currentNode);
         }
     }
 
@@ -270,7 +268,7 @@ public class NodeHandler : MonoBehaviour
             }
             for (int x = 1; x <= cWeight; x++)
             {
-                value = value - Mathf.Pow(0.2f, x);
+                value -= Mathf.Pow(0.2f, x);
             }
 
             matrix[i, j] = -value;
@@ -322,7 +320,7 @@ public class NodeHandler : MonoBehaviour
     {
         NodeListDisplay.InitialiseList();
         if(currentNode != null)
-            CurrentNodeDisplay.Initialise(currentNode);
+            CurrentNodeDisplay.Fill(currentNode);
         ConnectionHandler.RenderConnections();
     }
 

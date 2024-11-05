@@ -79,7 +79,7 @@ public class Node : MonoBehaviour
         dragCounter = 0;
     }
 
-    public void SetActive(Color colour)
+    public void SetActive()
     {
         MyRenderer.material = GlowMaterial;
         MyRenderer.material.SetColor("_Color", myColour);
