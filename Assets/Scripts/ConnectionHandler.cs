@@ -96,6 +96,10 @@ public class ConnectionHandler : MonoBehaviour
             ConfirmDragConnectionMenu.gameObject.SetActive(true);
             ConfirmDragConnectionMenu.Initialise(a, b);
         }
+        else
+        {
+            b.MyLine.enabled = false;
+        }
     }
 
     public static bool DoesConnectionExist(Connection c)
@@ -128,17 +132,34 @@ public class ConnectionHandler : MonoBehaviour
             {
                 Debug.Log("Node A or Node B missing in connection");
             }
-            Vector3 middle = (c.A.transform.position + c.B.transform.position) / 2.0f;
-            float distance = Vector3.Distance(c.A.transform.position, c.B.transform.position);
-            cd.transform.position = middle;
-            Vector3 direction = (c.A.transform.position - c.B.transform.position).normalized;
-            cd.transform.rotation = Quaternion.LookRotation(direction, Vector3.up) * Quaternion.Euler(90, 0, 0); 
-            cd.transform.localScale += new Vector3(0, (distance / 2)-1, 0);
-
+            cd.NodeA = c.A;
+            cd.NodeB = c.B;
+            PositionConnection(cd);
             cd.GetComponent<Renderer>().material.SetColor("_ColourTop", c.A.GetColour());
             cd.GetComponent<Renderer>().material.SetColor("_ColourBottom", c.B.GetColour());
             ConnectionDisplays.Add(cd);
         }
+    }
+
+    public static void UpdateConnectionsForNode(Node n)
+    {
+        foreach(ConnectionDisplay cd in ConnectionDisplays)
+        {
+            if (n.GetNodeName() == cd.NodeA.GetNodeName() || n.GetNodeName() == cd.NodeB.GetNodeName())
+            {
+                PositionConnection(cd);
+            }
+        }
+    }
+
+    public static void PositionConnection(ConnectionDisplay cd)
+    {
+        Vector3 middle = (cd.NodeA.transform.position + cd.NodeB.transform.position) / 2.0f;
+        float distance = Vector3.Distance(cd.NodeA.transform.position, cd.NodeB.transform.position);
+        cd.transform.position = middle;
+        Vector3 direction = (cd.NodeA.transform.position - cd.NodeB.transform.position).normalized;
+        cd.transform.rotation = Quaternion.LookRotation(direction, Vector3.up) * Quaternion.Euler(90, 0, 0);
+        cd.transform.localScale = new Vector3(cd.transform.localScale.x, distance / 2, cd.transform.localScale.z);
     }
 
     public static void ClearConnections()

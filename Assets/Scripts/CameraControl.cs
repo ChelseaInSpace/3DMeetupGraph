@@ -77,7 +77,7 @@ public class CameraControl : MonoBehaviour
 			}
 			
 			//Mouse look around
-            if(Input.GetMouseButton(1))
+            if(Input.GetMouseButton(2))
             {
 	            if(SettingsData.LockMouseOnCameraMovement)
 		            Cursor.lockState = CursorLockMode.Locked;
@@ -96,13 +96,13 @@ public class CameraControl : MonoBehaviour
                     transform.RotateAround(target, transform.forward, mouse * rotateSpeed * 2 * Time.deltaTime);
 	            }
             }
-            if(Input.GetMouseButtonUp(1))
+            if(Input.GetMouseButtonUp(2))
             {
             	Cursor.lockState = CursorLockMode.None;
             }
 
             //Mouse drag around
-            if (Input.GetMouseButton(2))
+            if (Input.GetMouseButton(1))
             {
 	            if(SettingsData.LockMouseOnCameraMovement)
 		            Cursor.lockState = CursorLockMode.Locked;
@@ -111,7 +111,7 @@ public class CameraControl : MonoBehaviour
 	            transform.Translate(Vector3.right * (flySpeed * mouseX));
 	            transform.Translate(Vector3.up * (flySpeed * mouseY));
             }
-            if (Input.GetMouseButtonUp(2))
+            if (Input.GetMouseButtonUp(1))
             {
 	            Cursor.lockState = CursorLockMode.None;
             }
@@ -187,5 +187,10 @@ public class CameraControl : MonoBehaviour
 	public static Transform GetCameraTransform()
     {
 		return me.transform;
+    }
+
+	public static bool IsMoving()
+    {
+		return me.GetComponent<CameraControl>().isMoving;
     }
 }

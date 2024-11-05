@@ -5,5 +5,6 @@ using UnityEngine;
 public class ConnectionDisplay : MonoBehaviour
 {
     public Material MyMat;
-
+    public Node NodeA;
+    public Node NodeB;
 }

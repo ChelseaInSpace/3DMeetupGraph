@@ -16,6 +16,7 @@ public class Node : MonoBehaviour
     string myName = "Empty";
     int dragCounter = 0;
     bool dragging;
+    bool nodeMoving;
     Vector3 worldPosition;
 
     void Update()
@@ -46,11 +47,24 @@ public class Node : MonoBehaviour
 
     private void OnMouseDrag()
     {
-        //TODO: add function to move Nodes around via drag
-        if (NodeHandler.GetCurrentNode() == this)
+        if (NodeHandler.GetCurrentNode() == this && !CameraControl.IsMoving())
         {
             dragging = true;
-            if (dragCounter > 15)
+
+            if(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.LeftShift) )
+            {
+                MyLine.enabled = false;
+                nodeMoving = true;
+                float distance;
+                Plane plane = new(-CameraControl.GetCameraTransform().forward, transform.position);
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if(plane.Raycast(ray, out distance))
+                {
+                    transform.position = ray.GetPoint(distance);
+                    ConnectionHandler.UpdateConnectionsForNode(this);
+                }
+            }
+            else if(dragCounter > 15)
             {
                 MyLine.enabled = true;
                 MyLine.SetPosition(0, transform.position);
@@ -63,23 +77,34 @@ public class Node : MonoBehaviour
                 }
                 MyLine.SetPosition(1, worldPosition);
             }
+            if(Input.GetKeyUp(KeyCode.LeftShift) || Input.GetKeyUp(KeyCode.LeftShift))
+            {
+                nodeMoving = false;
+            }
         }
     }
 
     private void OnMouseUp()
     {
         MyLine.enabled = false;
-        if (NodeHandler.GetCurrentNode() == this)
+        if (nodeMoving)
         {
-            RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out hit))
+            nodeMoving = false;
+        }
+        else
+        {
+            if (NodeHandler.GetCurrentNode() == this)
             {
-                Node otherNode = hit.transform.GetComponent<Node>();
-                if (otherNode != null && otherNode != this)
+                RaycastHit hit;
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(ray, out hit))
                 {
-                    MyLine.enabled = true;
-                    ConnectionHandler.CreateConnectionFromDrag(otherNode, this);
+                    Node otherNode = hit.transform.GetComponent<Node>();
+                    if (otherNode != null && otherNode != this)
+                    {
+                        MyLine.enabled = true;
+                        ConnectionHandler.CreateConnectionFromDrag(otherNode, this);
+                    }
                 }
             }
         }
