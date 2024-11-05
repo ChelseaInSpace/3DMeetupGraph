@@ -7,11 +7,8 @@ using System.Linq;
 
 public class NodeHandler : MonoBehaviour
 {
-    //TODO:
-    //store nodes and connections
-    //load nodes and connections
-    //delete connections
-
+    public CameraControl MyCameraReference;
+    static CameraControl MyCamera;
     public Node Prefab;
     static Node NodePrefab;
     public static List<Node> NodeList = new List<Node>();
@@ -19,6 +16,7 @@ public class NodeHandler : MonoBehaviour
     static UICurrentNode CurrentNodeDisplay;
     public UINodeList NodeListReference;
     static UINodeList NodeListDisplay;
+    
     static Node currentNode;
     static Transform me;
     static double[] values;
@@ -28,6 +26,7 @@ public class NodeHandler : MonoBehaviour
 
     void Awake()
     {
+        MyCamera = MyCameraReference;
         NodePrefab = Prefab;
         me = transform;
         NodeListDisplay = NodeListReference;
@@ -156,43 +155,43 @@ public class NodeHandler : MonoBehaviour
         }
     }
 
-    public static Color RGBFromMatrix(double[][] vectors, int nodeIndex)
-    {
-        double minimumRed = 9999;
-        double maximumRed = -9999;
-        for (int i = 0; i < vectors.Length; i++)
-        {
-            if(vectors[i][vectors.Length-5] < minimumRed)
-                minimumRed = vectors[i][vectors.Length - 5];
-            if (vectors[i][vectors.Length - 5] > maximumRed)
-                maximumRed = vectors[i][vectors.Length - 5];
-        }
-        float tempRed = (float) ((vectors[nodeIndex][vectors.Length-5] - minimumRed) / (maximumRed - minimumRed));
-
-        double minimumGreen = 9999;
-        double maximumGreen = -9999;
-        for(int i = 0; i < vectors.Length; i++)
-        {
-            if (vectors[i][vectors.Length - 6] < minimumGreen)
-                minimumGreen = vectors[i][vectors.Length - 6];
-            if (vectors[i][vectors.Length - 6] > maximumGreen)
-                maximumGreen = vectors[i][vectors.Length - 6];
-        }
-        float tempGreen = (float)((vectors[nodeIndex][vectors.Length - 6] - minimumGreen) / (maximumGreen - minimumGreen));
-
-        double minimumBlue = 9999;
-        double maximumBlue = -9999;
-        for (int i = 0; i < vectors.Length; i++)
-        {
-            if (vectors[i][vectors.Length - 7] < minimumBlue)
-                minimumBlue = vectors[i][vectors.Length - 7];
-            if (vectors[i][vectors.Length - 7] > maximumBlue)
-                maximumBlue = vectors[i][vectors.Length - 7];
-        }
-        float tempBlue = (float)((vectors[nodeIndex][vectors.Length - 7] - minimumBlue) / (maximumBlue - minimumBlue));
-
-        return new Color(tempRed, tempGreen, tempBlue);
-    }
+    // public static Color RGBFromMatrix(double[][] vectors, int nodeIndex)
+    // {
+    //     double minimumRed = 9999;
+    //     double maximumRed = -9999;
+    //     for (int i = 0; i < vectors.Length; i++)
+    //     {
+    //         if(vectors[i][vectors.Length-5] < minimumRed)
+    //             minimumRed = vectors[i][vectors.Length - 5];
+    //         if (vectors[i][vectors.Length - 5] > maximumRed)
+    //             maximumRed = vectors[i][vectors.Length - 5];
+    //     }
+    //     float tempRed = (float) ((vectors[nodeIndex][vectors.Length-5] - minimumRed) / (maximumRed - minimumRed));
+    //
+    //     double minimumGreen = 9999;
+    //     double maximumGreen = -9999;
+    //     for(int i = 0; i < vectors.Length; i++)
+    //     {
+    //         if (vectors[i][vectors.Length - 6] < minimumGreen)
+    //             minimumGreen = vectors[i][vectors.Length - 6];
+    //         if (vectors[i][vectors.Length - 6] > maximumGreen)
+    //             maximumGreen = vectors[i][vectors.Length - 6];
+    //     }
+    //     float tempGreen = (float)((vectors[nodeIndex][vectors.Length - 6] - minimumGreen) / (maximumGreen - minimumGreen));
+    //
+    //     double minimumBlue = 9999;
+    //     double maximumBlue = -9999;
+    //     for (int i = 0; i < vectors.Length; i++)
+    //     {
+    //         if (vectors[i][vectors.Length - 7] < minimumBlue)
+    //             minimumBlue = vectors[i][vectors.Length - 7];
+    //         if (vectors[i][vectors.Length - 7] > maximumBlue)
+    //             maximumBlue = vectors[i][vectors.Length - 7];
+    //     }
+    //     float tempBlue = (float)((vectors[nodeIndex][vectors.Length - 7] - minimumBlue) / (maximumBlue - minimumBlue));
+    //
+    //     return new Color(tempRed, tempGreen, tempBlue);
+    // }
 
     public static void RainbowHSVColours()
     {
@@ -226,23 +225,26 @@ public class NodeHandler : MonoBehaviour
 
     public static void UpdateCurrentNode(Node newCurrentNode)
     {
-        //TODO: different highlight effect
-        if (currentNode != null)
-            currentNode.ResetColour();
-
-        if (currentNode == newCurrentNode)
+        if (currentNode != newCurrentNode)
         {
-            currentNode = null;
-            CurrentNodeDisplay.Empty();
-        }
-        else
-        {
+            if (currentNode)
+                currentNode.SetInactive();
             currentNode = newCurrentNode;
             Color c = Color.white;
             c.a = 0.4f;
-            currentNode.SetActiveColour(c);
-            CameraControl.SetCameraGlobally(currentNode.transform.position);
+            currentNode.SetActive(c);
+            MyCamera.SetCameraTarget(currentNode.transform.position);
             CurrentNodeDisplay.Initialise(currentNode);
+        }
+    }
+
+    public static void SetNoCurrentNode()
+    {
+        if (currentNode)
+        {
+            currentNode.SetInactive();
+            currentNode = null;
+            CurrentNodeDisplay.Empty();
         }
     }
 

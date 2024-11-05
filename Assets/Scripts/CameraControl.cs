@@ -10,7 +10,8 @@ public class CameraControl : MonoBehaviour
 {
     public static bool MovementEnabled = true;
 	static Transform me; 
-	Vector3 mouseOrigin;
+	Vector3 targetPos;
+	private bool isMoving = false;
 
 	//Movement controls
 	float flySpeed = 0.05f;
@@ -30,16 +31,45 @@ public class CameraControl : MonoBehaviour
     
 	void Update()
 	{
-		if (!EventSystem.current.IsPointerOverGameObject() && MovementEnabled)
+		//Smoothly move to target position while player inputs are disabled
+		if (isMoving)
 		{
+			transform.position = Vector3.MoveTowards(transform.position, targetPos, Time.deltaTime * 15f);
+			if(transform.position == targetPos)
+				isMoving = false;
+		}
+		
+		else if (!EventSystem.current.IsPointerOverGameObject() && MovementEnabled)
+		{
+			//Set current Node when Left Mouse Button is clicked
+			if (Input.GetMouseButtonDown(0))
+			{
+				Ray ray1 = Camera.main.ScreenPointToRay(Input.mousePosition);
+				if (Physics.Raycast(ray1, out RaycastHit hit))
+				{
+					Node hitNode = hit.collider.gameObject.GetComponent<Node>();
+					if (hitNode)
+					{
+						NodeHandler.UpdateCurrentNode(hitNode);
+					}
+					else
+					{
+						NodeHandler.SetNoCurrentNode();
+					}
+				}
+				else
+				{
+					NodeHandler.SetNoCurrentNode();
+				}
+			}
+			
 			//Mouse look around
             if(Input.GetMouseButton(1))
             {
 	            if(SettingsData.LockMouseOnCameraMovement)
 		            Cursor.lockState = CursorLockMode.Locked;
                 //TODO: improve movement around node and reimplement
-                //Vector3 target = NodeHandler.HasCurrentNode() ? NodeHandler.GetCurrentNode().transform.position : Vector3.zero;
-                Vector3 target = Vector3.zero;
+                Vector3 target = NodeHandler.HasCurrentNode() ? NodeHandler.GetCurrentNode().transform.position : Vector3.zero;
                 if (!Input.GetKey(KeyCode.LeftShift))
 	            {
 		            mouseX = SettingsData.InvertCamRotX ? -Input.GetAxis("Mouse X") : Input.GetAxis("Mouse X");
@@ -96,12 +126,12 @@ public class CameraControl : MonoBehaviour
     
             if (Input.GetAxis("Vertical") != 0)
             {
-            	transform.Translate(Vector3.forward * flySpeed * Input.GetAxis("Vertical"));
+            	transform.Translate(Vector3.forward * (flySpeed * Input.GetAxis("Vertical")));
             }
     
             if (Input.GetAxis("Horizontal") != 0)
             {
-            	transform.Translate(Vector3.right * flySpeed * Input.GetAxis("Horizontal"));
+            	transform.Translate(Vector3.right * (flySpeed * Input.GetAxis("Horizontal")));
             }
             
             if (Input.GetKey(KeyCode.E))
@@ -123,11 +153,11 @@ public class CameraControl : MonoBehaviour
 		}
 	}
 	
-	public static void SetCameraGlobally(Vector3 pos)
+	public void SetCameraTarget(Vector3 pos)
 	{
-        //TODO: LERP and fix stuff
-        //me.position = pos;
-        //me.position -= me.forward.normalized * 3f;
+		targetPos = pos - me.forward.normalized * 2f;
+		if (targetPos != transform.position)
+			isMoving = true;
 	}
 
 	public static Transform GetCameraTransform()

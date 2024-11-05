@@ -30,20 +30,12 @@ public class Node : MonoBehaviour
         MyText.color = c;
         myColour = c;
         myMaterial = MyRenderer.material;
-        ResetColour();
+        SetInactive();
     }
 
     public string GetNodeName()
     {
         return myName;
-    }
-
-    private void OnMouseDown()
-    {
-        if (!EventSystem.current.IsPointerOverGameObject())
-        {
-            NodeHandler.UpdateCurrentNode(this);
-        }
     }
 
     private void OnMouseDrag()
@@ -87,13 +79,13 @@ public class Node : MonoBehaviour
         dragCounter = 0;
     }
 
-    public void SetActiveColour(Color colour)
+    public void SetActive(Color colour)
     {
         MyRenderer.material = GlowMaterial;
         MyRenderer.material.SetColor("_Color", myColour);
     }
     
-    public void ResetColour()
+    public void SetInactive()
     {
         MyRenderer.material = myMaterial;
         MyRenderer.material.color = myColour;
@@ -108,7 +100,7 @@ public class Node : MonoBehaviour
     {
         MyText.color = c;
         myColour = c;
-        ResetColour();
+        SetInactive();
         NodeHandler.RedrawNodeInfo();
     }
 }

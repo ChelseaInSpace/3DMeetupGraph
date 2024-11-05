@@ -273,6 +273,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 690583c6b03ae27468e251fda2d9136a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MyCameraReference: {fileID: 1790968130}
   Prefab: {fileID: 1132007207410654696, guid: 36b1c20a052ee34489bb7348732f078a, type: 3}
   NodeDisplayReference: {fileID: 831238279}
   NodeListReference: {fileID: 1063378668}
