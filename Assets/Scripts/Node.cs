@@ -14,6 +14,7 @@ public class Node : MonoBehaviour
     Color myColour;
     Material myMaterial;
     string myName = "Empty";
+    bool isActive = false;
     int dragCounter = 0;
     bool dragging;
     bool nodeMoving;
@@ -114,12 +115,14 @@ public class Node : MonoBehaviour
 
     public void SetActive()
     {
+        isActive = true;
         MyRenderer.material = GlowMaterial;
         MyRenderer.material.SetColor("_Color", myColour);
     }
     
     public void SetInactive()
     {
+        isActive = false;
         MyRenderer.material = myMaterial;
         MyRenderer.material.color = myColour;
     }
@@ -133,7 +136,10 @@ public class Node : MonoBehaviour
     {
         MyText.color = c;
         myColour = c;
-        SetInactive();
+        if (isActive)
+            SetActive();
+        else
+            SetInactive();
         NodeHandler.RedrawNodeInfo();
     }
 }
