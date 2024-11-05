@@ -2417,7 +2417,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 7172102032333499825}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.45506603
+  m_Size: 0.45506608
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -5724,7 +5724,7 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2784549490837337208}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.544934}
+  m_AnchorMin: {x: 0, y: 0.5449339}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -0.000061035156}
   m_SizeDelta: {x: 20, y: 20}
@@ -6044,9 +6044,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4182271008872855535, guid: 134347ff4e865e790a3a5f0f5bf3d5d2, type: 3}
       propertyPath: m_text
-      value: Hold down your Right Mouse Button and move the cursor to rotate the
-        camera around the center. Rotation directions can be inverted in the Options.
-        Hold Left Shift to roll the view instead.
+      value: Hold down your Right Mouse Button and move the cursor to drag the camera
+        view. Drag directions can be inverted in the Options.
       objectReference: {fileID: 0}
     - target: {fileID: 4182271008872855535, guid: 134347ff4e865e790a3a5f0f5bf3d5d2, type: 3}
       propertyPath: m_Enabled
@@ -7733,8 +7732,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4182271008872855535, guid: 134347ff4e865e790a3a5f0f5bf3d5d2, type: 3}
       propertyPath: m_text
-      value: Hold down your Middle Mouse Button and move the cursor to drag the camera
-        view. Drag directions can be inverted in the Options.
+      value: Hold down your Middle Mouse Button and move the cursor to rotate the
+        camera around the center. Rotation directions can be inverted in the Options.
+        Hold Shift at the same time to roll the view instead.
       objectReference: {fileID: 0}
     - target: {fileID: 4182271008872855535, guid: 134347ff4e865e790a3a5f0f5bf3d5d2, type: 3}
       propertyPath: m_Enabled
@@ -8210,7 +8210,8 @@ PrefabInstance:
     - target: {fileID: 4182271008872855535, guid: 134347ff4e865e790a3a5f0f5bf3d5d2, type: 3}
       propertyPath: m_text
       value: Hold down your Left Mouse Button on a node and move the cursor to drag
-        a connection to another node.
+        a connection to another node. Hold Shift at the same time to move the node
+        around instead.
       objectReference: {fileID: 0}
     - target: {fileID: 4182271008872855535, guid: 134347ff4e865e790a3a5f0f5bf3d5d2, type: 3}
       propertyPath: m_Enabled

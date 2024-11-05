@@ -52,7 +52,7 @@ public class Node : MonoBehaviour
         {
             dragging = true;
 
-            if(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.LeftShift) )
+            if(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) )
             {
                 MyLine.enabled = false;
                 nodeMoving = true;
@@ -78,7 +78,7 @@ public class Node : MonoBehaviour
                 }
                 MyLine.SetPosition(1, worldPosition);
             }
-            if(Input.GetKeyUp(KeyCode.LeftShift) || Input.GetKeyUp(KeyCode.LeftShift))
+            if(Input.GetKeyUp(KeyCode.LeftShift) || Input.GetKeyUp(KeyCode.RightShift))
             {
                 nodeMoving = false;
             }

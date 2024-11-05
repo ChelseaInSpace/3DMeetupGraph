@@ -83,7 +83,7 @@ public class CameraControl : MonoBehaviour
 		            Cursor.lockState = CursorLockMode.Locked;
 
                 Vector3 target = NodeHandler.HasCurrentNode() ? NodeHandler.GetCurrentNode().transform.position : GetPointInFrontOfCamera();
-                if (!Input.GetKey(KeyCode.LeftShift))
+                if (!Input.GetKey(KeyCode.LeftShift) && !Input.GetKey(KeyCode.RightShift))
 	            {
 		            mouseX = SettingsData.InvertCamRotX ? -Input.GetAxis("Mouse X") : Input.GetAxis("Mouse X");
 		            mouseY = SettingsData.InvertCamRotY ? -Input.GetAxis("Mouse Y") : Input.GetAxis("Mouse Y");
