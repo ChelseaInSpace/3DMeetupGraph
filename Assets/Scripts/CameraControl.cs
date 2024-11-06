@@ -172,7 +172,7 @@ public class CameraControl : MonoBehaviour
 			targetPos = pos - me.forward * 2f;
 			startingPos = transform.position;
 			movingDistance = Vector3.Distance(startingPos, targetPos);
-			movingSpeed = movingDistance > 4 ? 20f : 7.5f;
+			movingSpeed = movingDistance > 3.5 ? 15f : movingDistance > 2 ? 7.5f : 3.75f;
 			if (targetPos != transform.position)
 				isMoving = true;
 		}

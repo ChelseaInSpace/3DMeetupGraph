@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class UIButtonSave : MonoBehaviour
 {
-    // Start is called before the first frame update
     void Start()
     {
         Button btn = GetComponent<Button>();
