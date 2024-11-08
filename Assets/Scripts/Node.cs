@@ -7,6 +7,7 @@ using TMPro;
 public class Node : MonoBehaviour
 {
     public TextMeshPro MyText;
+    public Transform TextAnchor;
     public MeshRenderer MyRenderer;
     public LineRenderer MyLine;
     public Material GlowMaterial;
@@ -22,7 +23,7 @@ public class Node : MonoBehaviour
 
     void Update()
     {
-        MyText.transform.rotation = CameraControl.GetCameraTransform().rotation; 
+        TextAnchor.rotation = CameraControl.GetCameraTransform().rotation; 
     }
 
     void FixedUpdate()

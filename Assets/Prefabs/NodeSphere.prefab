@@ -121,6 +121,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MyText: {fileID: 4925709051956386963}
+  TextAnchor: {fileID: 1381477349672172380}
   MyRenderer: {fileID: 5892530084498733209}
   MyLine: {fileID: 4385944516525907187}
   GlowMaterial: {fileID: 2100000, guid: e0712a92216d7e946a41b4fb85488f1b, type: 2}
@@ -346,7 +347,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 1.4}
+  m_AnchoredPosition: {x: 0, y: 1.2}
   m_SizeDelta: {x: 5, y: 1.25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &3329902623322941902
@@ -477,9 +478,9 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
-  m_renderer: {fileID: 3329902623322941902}
-  m_maskType: 0
   _SortingLayer: 0
   _SortingLayerID: 0
   _SortingOrder: 0
+  m_hasFontAssetChanged: 0
+  m_renderer: {fileID: 3329902623322941902}
+  m_maskType: 0
