@@ -22,6 +22,13 @@ public class SaveLoadManager : MonoBehaviour
     }
 
     [System.Serializable]
+    public class PositionData
+    {
+        public string Name;
+        public Vector3 Position;
+    }
+
+    [System.Serializable]
     public class NDList
     {
         public List<NodeData> Nodes;
@@ -53,6 +60,22 @@ public class SaveLoadManager : MonoBehaviour
         }
     }
 
+    [System.Serializable]
+    public class PDList
+    {
+        public List<PositionData> Positions;
+
+        public PDList(List<PositionData> list)
+        {
+            Positions = list;
+        }
+
+        public void Add(PositionData pd)
+        {
+            Positions.Add(pd);
+        }
+    }
+
     public static bool Load;
     public static string ID = "Default";
 
@@ -72,6 +95,7 @@ public class SaveLoadManager : MonoBehaviour
         }
         File.WriteAllText(path + "/Nodes.json", JsonUtility.ToJson(NodesToFile()));
         File.WriteAllText(path + "/Connections.json", JsonUtility.ToJson(ConnectionsToFile()));
+        File.WriteAllText(path + "/Positions.json", JsonUtility.ToJson(PositionsToFile()));
     }
 
     public static NDList NodesToFile()
@@ -104,10 +128,26 @@ public class SaveLoadManager : MonoBehaviour
         return cdlist;
     }
 
+    public static PDList PositionsToFile()
+    {
+        PDList pdlist = new PDList(new List<PositionData>());
+        foreach(Node n in NodeHandler.NodeList)
+        {
+            PositionData pd = new PositionData
+            {
+                Name = n.GetNodeName(),
+                Position = n.transform.position
+            };
+            pdlist.Add(pd);
+        }
+        return pdlist;
+    }
+
     public static bool DataExists()
     {
         string pathNodes = Application.persistentDataPath + "/" + ID + "/Nodes.json";
         string pathConnections = Application.persistentDataPath + "/" + ID + "/Connections.json";
+        string pathPositions = Application.persistentDataPath + "/" + ID + "/Positions.json";
         if (!File.Exists(pathNodes))
         {
             return false;
@@ -116,7 +156,11 @@ public class SaveLoadManager : MonoBehaviour
         {
             return false;
         }
-        return JsonUtility.ToJson(NodesToFile()) == File.ReadAllText(pathNodes) && JsonUtility.ToJson(ConnectionsToFile()) == File.ReadAllText(pathConnections);
+        if(!File.Exists(pathPositions))
+        {
+            return false;
+        }
+        return JsonUtility.ToJson(NodesToFile()) == File.ReadAllText(pathNodes) && JsonUtility.ToJson(ConnectionsToFile()) == File.ReadAllText(pathConnections) && JsonUtility.ToJson(PositionsToFile()) == File.ReadAllText(pathPositions);
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -132,6 +176,7 @@ public class SaveLoadManager : MonoBehaviour
     {
         NDList LoadedND = new NDList(new List<NodeData>());
         CDList LoadedCD = new CDList(new List<ConnectionsData>());
+        PDList LoadedPD = new PDList(new List<PositionData>());
 
         string path = Application.persistentDataPath + "/" + id;
         if (File.Exists(path + "/Nodes.json"))
@@ -146,7 +191,17 @@ public class SaveLoadManager : MonoBehaviour
                     NodeHandler.CreateNode(nd.Name, nd.Colour);
             }
         }
-        
+
+        if (File.Exists(path + "/Positions.json"))
+        {
+            string positions = File.ReadAllText(path + "/Positions.json");
+            LoadedPD = JsonUtility.FromJson<PDList>(positions);
+            foreach (PositionData pd in LoadedPD.Positions)
+            {
+                NodeHandler.NodeList.Find(n => n.GetNodeName() == pd.Name).transform.position = pd.Position;
+            }
+        }
+
         if (File.Exists(path + "/Connections.json"))
         {
             string connections = File.ReadAllText(path + "/Connections.json");
