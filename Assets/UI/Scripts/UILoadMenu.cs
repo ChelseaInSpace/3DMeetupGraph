@@ -22,11 +22,14 @@ public class UILoadMenu : MonoBehaviour
 
         foreach (string s in savedGraphs)
         {
-            UIButtonProjectLoad temp = Instantiate(ButtonPrefab, Viewport);
-            btns.Add(temp);
-            temp.ID = Path.GetFileName(s);
-            temp.MyText.text = temp.ID;
-            temp.GetComponent<Button>().onClick.AddListener(() => Highlight(temp));
+            if(Directory.GetFiles(s).Length > 0)
+            {
+                UIButtonProjectLoad temp = Instantiate(ButtonPrefab, Viewport);
+                btns.Add(temp);
+                temp.ID = Path.GetFileName(s);
+                temp.MyText.text = temp.ID;
+                temp.GetComponent<Button>().onClick.AddListener(() => Highlight(temp));
+            }
         }
     }
 
