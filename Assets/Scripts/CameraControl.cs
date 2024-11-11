@@ -82,27 +82,51 @@ public class CameraControl : MonoBehaviour
 	            if(SettingsData.LockMouseOnCameraMovement)
 		            Cursor.lockState = CursorLockMode.Locked;
 
-                Vector3 target = NodeHandler.HasCurrentNode() ? NodeHandler.GetCurrentNode().transform.position : GetPointInFrontOfCamera();
-                if (!Input.GetKey(KeyCode.LeftShift) && !Input.GetKey(KeyCode.RightShift))
-	            {
-		            mouseX = SettingsData.InvertCamRotX ? -Input.GetAxis("Mouse X") : Input.GetAxis("Mouse X");
-		            mouseY = SettingsData.InvertCamRotY ? -Input.GetAxis("Mouse Y") : Input.GetAxis("Mouse Y");
-                    transform.RotateAround(target, transform.up, mouseX * rotateSpeed * Time.deltaTime);
-                    transform.RotateAround(target, transform.right, mouseY * rotateSpeed * Time.deltaTime);
-	            }
-	            else
-	            {
-		            mouse = Input.GetAxis("Mouse X");
-                    transform.RotateAround(target, transform.forward, mouse * rotateSpeed * 2 * Time.deltaTime);
-	            }
+				if(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+                {
+					RollCamera(Input.GetAxis("Mouse X"));
+                }
+				else
+                {
+					mouseX = SettingsData.InvertCamRotX ? -Input.GetAxis("Mouse X") : Input.GetAxis("Mouse X");
+					mouseY = SettingsData.InvertCamRotY ? -Input.GetAxis("Mouse Y") : Input.GetAxis("Mouse Y");
+					RotateCamera(mouseX, mouseY);
+				}
             }
-            if(Input.GetMouseButtonUp(2))
+			
+			//Keyboard look around
+			if(Input.GetKey(KeyCode.J))
             {
-            	Cursor.lockState = CursorLockMode.None;
+				RotateCamera(1, 0);
+            }
+			
+			if(Input.GetKey(KeyCode.L))
+            {
+				RotateCamera(-1, 0);
             }
 
-            //Mouse drag around
-            if (Input.GetMouseButton(1))
+			if (Input.GetKey(KeyCode.I))
+			{
+				RotateCamera(0, 1);
+			}
+
+			if (Input.GetKey(KeyCode.K))
+			{
+				RotateCamera(0, -1);
+			}
+
+			if (Input.GetKey(KeyCode.U))
+			{
+				RollCamera(1);
+			}
+
+			if (Input.GetKey(KeyCode.O))
+			{
+				RollCamera(-1);
+			}
+
+			//Mouse & Keyboard drag around
+			if (Input.GetMouseButton(1) || (Input.GetMouseButton(0) && Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)))
             {
 	            if(SettingsData.LockMouseOnCameraMovement)
 		            Cursor.lockState = CursorLockMode.Locked;
@@ -111,13 +135,14 @@ public class CameraControl : MonoBehaviour
 	            transform.Translate(Vector3.right * (flySpeed * mouseX));
 	            transform.Translate(Vector3.up * (flySpeed * mouseY));
             }
-            if (Input.GetMouseButtonUp(1))
-            {
-	            Cursor.lockState = CursorLockMode.None;
-            }
-    
-            //Keyboard fly around movement
-            if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
+
+			if (Input.GetMouseButtonUp(2) || Input.GetMouseButtonUp(1) || Input.GetMouseButtonUp(0) || Input.GetKeyUp(KeyCode.LeftControl) || Input.GetKeyUp(KeyCode.RightControl))
+			{
+				Cursor.lockState = CursorLockMode.None;
+			}
+
+			//Keyboard fly around movement
+			if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
             {
             	flySpeed *= accelerationRatio;
             }
@@ -176,6 +201,19 @@ public class CameraControl : MonoBehaviour
 			if (targetPos != transform.position)
 				isMoving = true;
 		}
+	}
+
+	public void RotateCamera(float x, float y)
+    {
+		Vector3 target = NodeHandler.HasCurrentNode() ? NodeHandler.GetCurrentNode().transform.position : GetPointInFrontOfCamera();
+		transform.RotateAround(target, transform.up, x * rotateSpeed * Time.deltaTime);
+		transform.RotateAround(target, transform.right, y * rotateSpeed * Time.deltaTime);
+	}
+
+	public void RollCamera(float x)
+    {
+		Vector3 target = NodeHandler.HasCurrentNode() ? NodeHandler.GetCurrentNode().transform.position : GetPointInFrontOfCamera();
+		transform.RotateAround(target, transform.forward, x * rotateSpeed * 2 * Time.deltaTime);
 	}
 
 	public Vector3 GetPointInFrontOfCamera()
